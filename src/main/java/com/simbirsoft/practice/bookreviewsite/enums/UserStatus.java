@@ -1,5 +1,5 @@
 package com.simbirsoft.practice.bookreviewsite.enums;
 
-public enum Status {
+public enum UserStatus {
     CONFIRMED, NOT_CONFIRMED
 }

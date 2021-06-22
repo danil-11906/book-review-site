@@ -1,13 +1,15 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
-import com.simbirsoft.practice.bookreviewsite.enums.Status;
+import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +17,9 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "account")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 4437060923718907313L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +42,9 @@ public class User {
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private UserStatus userStatus;
+
+    @OneToMany(mappedBy = "pushedBy")
+    private Set<Book> books;
 
 }

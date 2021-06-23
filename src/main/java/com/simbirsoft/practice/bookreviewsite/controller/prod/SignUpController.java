@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,12 +36,18 @@ public class SignUpController {
                          BindingResult bindingResult,
                          Model model) {
         if (bindingResult.hasErrors()) {
+
+            if (bindingResult.hasGlobalErrors()) {
+                ObjectError passwordMismatchError = bindingResult.getGlobalError();
+                model.addAttribute("passwordMismatch", passwordMismatchError.getDefaultMessage());
+            }
             model.addAttribute("signUpForm", signUpForm);
+
             return "signUp";
         }
         else {
             signUpService.signUpWithRole(signUpForm, Role.USER);
-            return "redirect:/signUp/pls_confirm_email";
+            return "redirect:/sign_up/pls_confirm_email";
         }
     }
 

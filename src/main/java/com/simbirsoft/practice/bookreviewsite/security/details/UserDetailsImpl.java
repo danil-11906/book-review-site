@@ -29,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-        authorities.add(new SimpleGrantedAuthority(user.getStatus().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getUserStatus().toString()));
 
         return authorities;
     }

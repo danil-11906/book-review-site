@@ -2,7 +2,7 @@ package com.simbirsoft.practice.bookreviewsite.service;
 
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
-import com.simbirsoft.practice.bookreviewsite.enums.Status;
+import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.repository.UsersRepository;
@@ -43,12 +43,12 @@ public class SignUpServiceImpl implements SignUpService {
                 .confirmCode(UUID.randomUUID().toString())
                 .build();
 
-        Status status;
+        UserStatus userStatus;
         if (activeProfile.equals("dev")) {
-            status = Status.CONFIRMED;
-        } else status = Status.NOT_CONFIRMED;
+            userStatus = UserStatus.CONFIRMED;
+        } else userStatus = UserStatus.NOT_CONFIRMED;
 
-        user.setStatus(status);
+        user.setUserStatus(userStatus);
         usersRepository.save(user);
 
         if (activeProfile.equals("prod")) {
@@ -67,7 +67,7 @@ public class SignUpServiceImpl implements SignUpService {
         User user = usersRepository.getUserByConfirmCode(confirmCode)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        user.setStatus(Status.CONFIRMED);
+        user.setUserStatus(UserStatus.CONFIRMED);
         usersRepository.save(user);
     }
 

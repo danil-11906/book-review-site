@@ -46,5 +46,4 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "pushedBy")
     private Set<Book> books;
-
 }

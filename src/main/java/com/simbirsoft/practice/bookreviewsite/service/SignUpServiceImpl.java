@@ -44,6 +44,8 @@ public class SignUpServiceImpl implements SignUpService {
                 .build();
 
         UserStatus userStatus;
+
+        // TODO
         if (activeProfile.equals("dev")) {
             userStatus = UserStatus.CONFIRMED;
         } else userStatus = UserStatus.NOT_CONFIRMED;
@@ -60,6 +62,19 @@ public class SignUpServiceImpl implements SignUpService {
                     "Подтверждение email");
         }
     }
+
+    @Override
+    public User signUpWithOAuth(String email, String name) {
+        User user = User.builder()
+                .email(email)
+                .name(name)
+                .role(Role.USER)
+                .userStatus(UserStatus.CONFIRMED)
+                .build();
+
+        return usersRepository.save(user);
+    }
+
 
     @Override
     public void confirmUserByConfirmCode(String confirmCode) throws UserNotFoundException {

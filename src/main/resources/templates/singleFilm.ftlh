@@ -1,6 +1,7 @@
 <#import "base.ftlh" as base>
+    <title>Book</title>
 
-<@base.main>
+
     <section class="singleFilm">
         <div class="singleFilm__inner">
             <div class="singleFilm__item">
@@ -60,17 +61,6 @@
                     eget mattis ac, viverra sit amet libero. In ut libero sapien. Nam non venenatis mi, vel sodales augue.
                     Donec fringilla nisi vel est placerat, sed tempor est venenatis. Donec non sollicitudin felis.Donec eu
                     urna sodales, feugiat urna quis, pretium augue. Donec vel massa nec.
-                </div>
-            </div>
-
-            <div class="trailer singleMovie__description">
-                <div class="trailer__title singleMovie__description-title">
-                    Трейлер
-                </div>
-                <div class="trailer__iframe">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/yX-ZlmQzFbM" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -156,6 +146,8 @@
             </div>
         </div>
     </footer>
+<@base.main>
+</@base.main>
 
     <script>
         const mainPage = document.querySelector('#page');
@@ -217,4 +209,3 @@
         });
         btnProfile.addEventListener("click", tooltips);
     </script>
-</@base.main>

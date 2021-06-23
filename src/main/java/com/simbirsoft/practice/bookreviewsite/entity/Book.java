@@ -58,4 +58,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
+    @OneToMany(mappedBy = "bookId")
+    private Set<Review> reviews;
+
 }

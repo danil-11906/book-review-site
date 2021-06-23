@@ -6,14 +6,13 @@ import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Data
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements CustomUserDetails {
 
     private User user;
     private UserDTO userDTO;
@@ -62,6 +61,16 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public User getUser() {
+        return user;
+    }
+
+    @Override
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.service;
 
+import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
@@ -9,7 +10,7 @@ public interface SignUpService {
 
     void signUpWithRole(SignUpForm signUpForm, Role role);
 
-    User signUpWithOAuth(String email, String name);
+    UserDTO signUpWithOAuth(String email, String name);
 
     void confirmUserByConfirmCode(String confirmCode) throws UserNotFoundException;
 

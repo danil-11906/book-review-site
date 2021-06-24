@@ -1,13 +1,9 @@
 package com.simbirsoft.practice.bookreviewsite.security.config;
 
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
-import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2User;
-import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,21 +22,23 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    @Qualifier("customUserDetailService")
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserConfirmedFilter userConfirmedFilter;
+    private final UserConfirmedFilter userConfirmedFilter;
 
-    @Autowired
-    private CustomOAuth2UserService oauthUserService;
+    private final SignUpService signUpService;
 
-    @Autowired
-    private SignUpService signUpService;
+    public SecurityConfiguration(@Qualifier("customUserDetailService") UserDetailsService userDetailsService,
+                                 PasswordEncoder passwordEncoder, UserConfirmedFilter userConfirmedFilter,
+                                 SignUpService signUpService) {
+
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.userConfirmedFilter = userConfirmedFilter;
+        this.signUpService = signUpService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,9 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/login/**").permitAll()
                 .antMatchers("/profile/**").authenticated()
                     .and()
-                .oauth2Login().loginPage("/login").userInfoEndpoint().userService(oauthUserService)
-                .and()
-                .successHandler(this::onAuthenticationSuccess)
+                .oauth2Login().loginPage("/login").successHandler(this::onAuthenticationSuccess)
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -76,8 +71,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
-        CustomOAuth2User oAuth2User = new CustomOAuth2User((OAuth2User) authentication.getPrincipal()); //TODO cast
-        signUpService.signUpWithOAuth(oAuth2User.getEmail(), oAuth2User.getName());
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+
+        String email = oAuth2User.getAttribute("email");
+        String name = oAuth2User.getAttribute("name");
+
+        signUpService.signUpWithOAuth(email, name);
+
         httpServletResponse.sendRedirect("/home");
     }
 }

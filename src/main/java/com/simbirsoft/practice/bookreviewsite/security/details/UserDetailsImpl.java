@@ -1,26 +1,22 @@
 package com.simbirsoft.practice.bookreviewsite.security.details;
 
-import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import lombok.Data;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Data
-public class UserDetailsImpl implements CustomUserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private User user;
-    private UserDTO userDTO;
 
     public UserDetailsImpl(User user) {
         this.user = user;
-        ModelMapper modelMapper = new ModelMapper();
-        userDTO = modelMapper.map(user, UserDTO.class);
     }
 
     @Override
@@ -63,14 +59,7 @@ public class UserDetailsImpl implements CustomUserDetails {
         return true;
     }
 
-    @Override
     public User getUser() {
         return user;
     }
-
-    @Override
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
-
 }

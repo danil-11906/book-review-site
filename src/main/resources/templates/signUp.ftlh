@@ -263,6 +263,10 @@
 <#--                    <div class="input__error">Пароли не совпадают</div>-->
 <#--                </div>-->
                 <button type=submit class="auth__registration-btn">Зарегистрироваться</button>
+                <a class="auth__social-google" href="/oauth2/authorization/google">
+                    <img class="social-google__icon" src="/images/auth/google-icon.png" alt="Google icon">
+                    <span class="social-google__text">Войти через Google</span>
+                </a>
             </form>
         </div>
     </section>

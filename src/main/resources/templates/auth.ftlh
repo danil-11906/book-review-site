@@ -238,6 +238,10 @@
                     <div style="color: red">${error}</div>
                 </#if>
                 <button type="submit" class="auth__login-btn">Войти</button>
+                <a class="auth__social-google" href="/oauth2/authorization/google">
+                    <img class="social-google__icon" src="/images/auth/google-icon.png" alt="Google icon">
+                    <span class="social-google__text">Войти через Google</span>
+                </a>
             </form>
         </div>
     </section>

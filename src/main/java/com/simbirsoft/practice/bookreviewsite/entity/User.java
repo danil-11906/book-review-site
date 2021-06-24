@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 30)
+    @Column(length = 30, unique = true)
     private String email;
 
     private String hashedPassword;
@@ -46,5 +46,4 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "pushedBy")
     private Set<Book> books;
-
 }

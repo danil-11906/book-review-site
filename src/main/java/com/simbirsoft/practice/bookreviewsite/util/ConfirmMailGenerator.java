@@ -1,9 +1,8 @@
-package com.simbirsoft.practice.bookreviewsite.utils;
+package com.simbirsoft.practice.bookreviewsite.util;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +14,17 @@ import java.util.Map;
 @Component
 public class ConfirmMailGenerator {
 
-    @Autowired
-    private Configuration configuration;
-
     @Value("${server.url}")
     private String serverAddress;
 
     @Value("${server.port}")
     private String serverPort;
+
+    private final Configuration configuration;
+
+    public ConfirmMailGenerator(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     public String generateConfirmMail(String confirmCode, String name) {
 
@@ -49,5 +51,4 @@ public class ConfirmMailGenerator {
         return stringWriter.toString();
 
     }
-
 }

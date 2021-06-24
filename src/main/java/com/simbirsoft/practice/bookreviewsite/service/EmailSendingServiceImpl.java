@@ -29,7 +29,5 @@ public class EmailSendingServiceImpl implements EmailSendingService {
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(letter, true);
         }));
-
     }
-
 }

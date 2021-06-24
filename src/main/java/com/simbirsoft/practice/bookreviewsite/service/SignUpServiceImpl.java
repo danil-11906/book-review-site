@@ -1,36 +1,47 @@
 package com.simbirsoft.practice.bookreviewsite.service;
 
+import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.repository.UsersRepository;
-import com.simbirsoft.practice.bookreviewsite.utils.ConfirmMailGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.simbirsoft.practice.bookreviewsite.util.ConfirmMailGenerator;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private EmailSendingService emailSendingService;
+    private final EmailSendingService emailSendingService;
 
-    @Autowired
-    private ConfirmMailGenerator confirmMailGenerator;
+    private final ConfirmMailGenerator confirmMailGenerator;
+
+    private final ModelMapper modelMapper;
 
     @Value("${spring.profiles.active}")
     private String activeProfile;
+
+    public SignUpServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
+                             EmailSendingService emailSendingService, ConfirmMailGenerator confirmMailGenerator,
+                             ModelMapper modelMapper) {
+
+        this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.emailSendingService = emailSendingService;
+        this.confirmMailGenerator = confirmMailGenerator;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void signUpWithRole(SignUpForm signUpForm, Role role) {
@@ -44,6 +55,8 @@ public class SignUpServiceImpl implements SignUpService {
                 .build();
 
         UserStatus userStatus;
+
+        // TODO
         if (activeProfile.equals("dev")) {
             userStatus = UserStatus.CONFIRMED;
         } else userStatus = UserStatus.NOT_CONFIRMED;
@@ -62,6 +75,28 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     @Override
+    public UserDTO signUpWithOAuth(String email, String name) {
+        Optional<User> optionalUser = usersRepository.getByEmail(email);
+
+        if (!optionalUser.isPresent()) {
+            User user = User.builder()
+                    .email(email)
+                    .name(name)
+                    .role(Role.USER)
+                    .userStatus(UserStatus.CONFIRMED)
+                    .build();
+
+            user = usersRepository.save(user);
+
+            return modelMapper.map(user, UserDTO.class);
+        }
+
+        return modelMapper.map(optionalUser.get(), UserDTO.class);
+
+    }
+
+
+    @Override
     public void confirmUserByConfirmCode(String confirmCode) throws UserNotFoundException {
 
         User user = usersRepository.getUserByConfirmCode(confirmCode)
@@ -75,5 +110,4 @@ public class SignUpServiceImpl implements SignUpService {
     public boolean userWithSuchEmailExists(String email) {
         return usersRepository.existsByEmail(email);
     }
-
 }

@@ -1,9 +1,9 @@
 package com.simbirsoft.practice.bookreviewsite.dto;
 
 import com.simbirsoft.practice.bookreviewsite.entity.Category;
+import com.simbirsoft.practice.bookreviewsite.entity.Country;
+import com.simbirsoft.practice.bookreviewsite.entity.Language;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
-import com.simbirsoft.practice.bookreviewsite.enums.Country;
-import com.simbirsoft.practice.bookreviewsite.enums.Language;
 import lombok.*;
 
 import java.util.Set;

@@ -1,8 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
-import com.simbirsoft.practice.bookreviewsite.enums.Country;
-import com.simbirsoft.practice.bookreviewsite.enums.Language;
 import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 @AllArgsConstructor

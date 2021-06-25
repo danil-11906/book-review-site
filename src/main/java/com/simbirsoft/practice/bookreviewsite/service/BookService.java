@@ -15,4 +15,6 @@ public interface BookService {
     Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus);
 
     Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
+
+    int getBooksCountUserPushed(Long userId);
 }

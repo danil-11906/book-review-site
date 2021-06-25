@@ -2,12 +2,10 @@ package com.simbirsoft.practice.bookreviewsite.controller.prod;
 
 import com.simbirsoft.practice.bookreviewsite.dto.ProfileEditForm;
 import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
-import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
-import com.simbirsoft.practice.bookreviewsite.service.api.BooksService;
-import com.simbirsoft.practice.bookreviewsite.service.api.ReviewsService;
-import com.simbirsoft.practice.bookreviewsite.service.api.UsersService;
-import org.modelmapper.ModelMapper;
+import com.simbirsoft.practice.bookreviewsite.service.BookService;
+import com.simbirsoft.practice.bookreviewsite.service.ReviewsService;
+import com.simbirsoft.practice.bookreviewsite.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,7 +26,7 @@ public class ProfileController {
     private UsersService usersService;
 
     @Autowired
-    private BooksService booksService;
+    private BookService bookService;
 
     @Autowired
     private ReviewsService reviewsService;
@@ -37,13 +35,13 @@ public class ProfileController {
     public String getProfilePage(@AuthenticationPrincipal CustomUserDetails userDetails,
                                  Model model) {
 
-        UserDTO user = usersService.getById(userDetails.getUserDTO().getId());
+        UserDTO user = usersService.getById(userDetails.getUser().getId());
 
         model.addAttribute("user", user);
         model.addAttribute("title", "Профиль");
 
         Long userId = user.getId();
-        model.addAttribute("booksPushedCount", booksService.getBooksCountUserPushed(userId));
+        model.addAttribute("booksPushedCount", bookService.getBooksCountUserPushed(userId));
         model.addAttribute("reviewsWrittenCount", reviewsService.getReviewsCountUserWrote(userId));
 
         return "profile";
@@ -68,7 +66,7 @@ public class ProfileController {
             return "redactProfile";
         }
         else {
-            UserDTO userDTO = usersService.getById(userDetails.getUserDTO().getId());
+            UserDTO userDTO = usersService.getById(userDetails.getUser().getId());
 
             //Не беру юзера из UserDetails, потому что он не со свежими данными.
             //Нужен свежий аватар для удаления старой аватарки из облака по public_id

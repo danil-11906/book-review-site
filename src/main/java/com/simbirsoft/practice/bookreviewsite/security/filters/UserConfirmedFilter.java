@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+@Component
 public class UserConfirmedFilter extends OncePerRequestFilter {
 
     private Authentication authentication;

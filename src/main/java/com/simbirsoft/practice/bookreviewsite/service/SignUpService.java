@@ -1,4 +1,4 @@
-package com.simbirsoft.practice.bookreviewsite.service.api;
+package com.simbirsoft.practice.bookreviewsite.service;
 
 import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;

@@ -3,7 +3,7 @@ package com.simbirsoft.practice.bookreviewsite.controller.prod;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
-import com.simbirsoft.practice.bookreviewsite.service.api.SignUpService;
+import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;

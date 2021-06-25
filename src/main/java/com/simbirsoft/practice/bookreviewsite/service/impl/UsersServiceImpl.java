@@ -5,13 +5,11 @@ import com.cloudinary.utils.ObjectUtils;
 import com.simbirsoft.practice.bookreviewsite.dto.ProfileEditForm;
 import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
-import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.repository.UsersRepository;
-import com.simbirsoft.practice.bookreviewsite.service.api.UsersService;
+import com.simbirsoft.practice.bookreviewsite.service.UsersService;
 import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

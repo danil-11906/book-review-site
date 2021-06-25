@@ -1,8 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
-import com.simbirsoft.practice.bookreviewsite.enums.Country;
-import com.simbirsoft.practice.bookreviewsite.enums.Language;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,12 +23,6 @@ public class Book {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private Country country;
-
-    @Enumerated(EnumType.STRING)
-    private Language language;
-
     @Column(length = 100, nullable = false)
     private String author;
 
@@ -47,6 +39,14 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
+
+    @ManyToOne
+    @JoinTable(name = "country")
+    private Country country;
+
+    @ManyToOne
+    @JoinTable(name = "language")
+    private Language language;
 
     @ManyToOne
     @JoinColumn(name = "pushed_by")

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -29,8 +31,8 @@ public class Book {
     @Column(length = 1000, nullable = false)
     private String description;
 
-    @Column(length = 4, nullable = false)
-    private String releaseYear;
+    @Column(nullable = false)
+    private Integer releaseYear;
 
     private String cover;
 

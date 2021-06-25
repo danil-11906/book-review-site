@@ -42,7 +42,6 @@ public class SignUpController {
                 model.addAttribute("passwordMismatch", passwordMismatchError.getDefaultMessage());
             }
             model.addAttribute("signUpForm", signUpForm);
-
             return "signUp";
         }
         else {

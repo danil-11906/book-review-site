@@ -1,6 +1,9 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
+import com.simbirsoft.practice.bookreviewsite.enums.Country;
+import com.simbirsoft.practice.bookreviewsite.enums.Language;
+import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +19,7 @@ import java.util.Set;
 @Builder
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"pushedBy", "categories"})
 public class Book {
 
     @Id

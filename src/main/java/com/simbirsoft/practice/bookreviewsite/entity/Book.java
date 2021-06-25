@@ -3,10 +3,7 @@ package com.simbirsoft.practice.bookreviewsite.entity;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import com.simbirsoft.practice.bookreviewsite.enums.Country;
 import com.simbirsoft.practice.bookreviewsite.enums.Language;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Builder
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"pushedBy", "categories"})
 public class Book {
 
     @Id

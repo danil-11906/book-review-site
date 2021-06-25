@@ -1,4 +1,4 @@
-<#macro main css=[]>
+<#macro main css=[] title=''>
     <!DOCTYPE html>
     <html lang="en">
     <head>

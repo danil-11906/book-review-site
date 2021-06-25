@@ -1,4 +1,4 @@
-package com.simbirsoft.practice.bookreviewsite.service;
+package com.simbirsoft.practice.bookreviewsite.service.impl;
 
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
@@ -6,6 +6,8 @@ import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.repository.UsersRepository;
+import com.simbirsoft.practice.bookreviewsite.service.EmailSendingService;
+import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import com.simbirsoft.practice.bookreviewsite.utils.ConfirmMailGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

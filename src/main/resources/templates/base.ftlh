@@ -1,4 +1,4 @@
-<#macro main css=[]>
+<#macro main css=[] title=''>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -232,13 +232,21 @@
                         <div class="header__profile-content">
                             <div class="header__profile-content--inner">
                                 <div class="header__profile-username">
-                                    Добро пожаловать,
-                                    <span>Иван Иванович</span>
+                                    <#if user??>
+                                        Добро пожаловать,
+                                        <span>${user.name}</span>
+                                    <#else>
+                                        Вы не авторизованы
+                                    </#if>
                                 </div>
-                                <a href="#" class="header__profile-item">Профиль</a>
-                                <a href="#" class="header__profile-item">Фильмы</a>
-                                <a href="#" class="header__profile-item">Рецензии</a>
-                                <a href="#" class="header__profile-item">Выйти</a>
+                                <#if user??>
+                                    <a href="/profile" class="header__profile-item">Профиль</a>
+                                    <a href="#" class="header__profile-item">Мои загруженные книги </a>
+                                    <a href="#" class="header__profile-item"> Мои рецензии</a>
+                                    <a href="/log_out" class="header__profile-item">Выйти</a>
+                                <#else>
+                                    <a href="/login_or_sign_up" class="header__profile-item">Войти</a>
+                                </#if>
                             </div>
                         </div>
                     </div>

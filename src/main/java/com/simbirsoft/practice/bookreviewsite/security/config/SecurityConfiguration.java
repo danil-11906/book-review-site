@@ -60,7 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                     .and()
-                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
                 .csrf().disable();
 
     }

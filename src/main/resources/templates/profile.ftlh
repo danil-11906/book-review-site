@@ -11,40 +11,30 @@
             <div class="profile__body">
                 <div class="profile__body-inner">
                     <div class="profile__photo">
-                        <img src="/images/profile/avatarProfile.jpg" alt="" class="profile__img">
+                        <img <#if user.avatar??>
+                                src="${user.avatar}"
+                             <#else>
+                                src="/images/no_avatar.jpg"
+                        </#if> alt="" class="profile__img">
                     </div>
                     <ul class="profile__info">
-                        <li class="profile__info-item profile__name"><span>ФИО:</span>
-                            <span>Иван Иванович</span></li>
-                        <li class="profile__info-item profile__date"><span>Регистрация:</span>
-                            <span>21 февраля 2021</span></li>
-                        <li class="profile__info-item profile__country"><span>Страна:</span>
-                            <span>Russian</span>
-                        </li>
+                        <li class="profile__info-item profile__name"><span>Имя:</span>
+                            <span>${user.name}</span></li>
+                        <li class="profile__info-item profile__date"><span>Email:</span>
+                            <span>${user.email}</span></li>
                     </ul>
                 </div>
-                <a href="#" class="btn__change-data">Изменить данные</a>
+                <a href="/profile/edit" class="btn__change-data">Изменить данные</a>
             </div>
 
             <div class="profile__stat">
                 <div class="profile__stat-item">
-                    <div class="profile__stat-count">10</div>
-                    <div class="profile__stat-name">Фильмы</div>
+                    <div class="profile__stat-count">${booksPushedCount}</div>
+                    <div class="profile__stat-name">Загружено книг</div>
                 </div>
-
                 <div class="profile__stat-item">
-                    <div class="profile__stat-count">10</div>
-                    <div class="profile__stat-name">Комментарии</div>
-                </div>
-
-                <div class="profile__stat-item">
-                    <div class="profile__stat-count">10</div>
-                    <div class="profile__stat-name">Рецензии</div>
-                </div>
-
-                <div class="profile__stat-item">
-                    <div class="profile__stat-count">10</div>
-                    <div class="profile__stat-name">Любимые фильмы</div>
+                    <div class="profile__stat-count">${reviewsWrittenCount}</div>
+                    <div class="profile__stat-name">Рецензий</div>
                 </div>
             </div>
         </div>

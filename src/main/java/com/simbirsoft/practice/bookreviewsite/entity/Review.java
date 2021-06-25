@@ -6,21 +6,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
 @Entity
-public class Category {
+public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
-    private String title;
+    private String text;
+    private Integer mark;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Book> books;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 }

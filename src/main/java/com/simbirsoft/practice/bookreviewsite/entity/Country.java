@@ -8,19 +8,25 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+/**
+ * @author Anvar Khasanov
+ * student of ITIS KFU
+ * group 11-905
+ */
+
 @Data
 @Entity
-public class Category {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 50, nullable = false)
-    private String title;
+    private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "country")
     private Set<Book> books;
 }

@@ -4,6 +4,8 @@ import com.simbirsoft.practice.bookreviewsite.dto.ProfileEditForm;
 import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
+import com.simbirsoft.practice.bookreviewsite.service.api.BooksService;
+import com.simbirsoft.practice.bookreviewsite.service.api.ReviewsService;
 import com.simbirsoft.practice.bookreviewsite.service.api.UsersService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,23 @@ public class ProfileController {
     private UsersService usersService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private BooksService booksService;
+
+    @Autowired
+    private ReviewsService reviewsService;
 
     @GetMapping
     public String getProfilePage(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                 Model model) throws UserNotFoundException {
+                                 Model model) {
 
         UserDTO user = usersService.getById(userDetails.getUserDTO().getId());
 
         model.addAttribute("user", user);
         model.addAttribute("title", "Профиль");
+
+        Long userId = user.getId();
+        model.addAttribute("booksPushedCount", booksService.getBooksCountUserPushed(userId));
+        model.addAttribute("reviewsWrittenCount", reviewsService.getReviewsCountUserWrote(userId));
 
         return "profile";
     }
@@ -51,7 +60,7 @@ public class ProfileController {
     public String editProfile(@Valid @ModelAttribute ProfileEditForm editForm,
                               BindingResult bindingResult,
                               Model model,
-                              @AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException {
+                              @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Изменение профиля");

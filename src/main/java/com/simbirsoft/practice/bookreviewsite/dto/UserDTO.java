@@ -23,11 +23,8 @@ public class UserDTO implements Serializable {
     private Long id;
     private String name;
     private String email;
-    private String confirmCode;
     private String avatar;
     private Role role;
     private UserStatus userStatus;
-    private Set<Book> books;
-    private Set<Review> reviews;
 
 }

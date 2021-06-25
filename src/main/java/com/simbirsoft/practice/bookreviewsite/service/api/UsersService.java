@@ -8,6 +8,6 @@ public interface UsersService {
 
     void editProfile(ProfileEditForm profileEditForm, UserDTO userDTO);
 
-    UserDTO getById(Long id) throws UserNotFoundException;
+    UserDTO getById(Long id);
 
 }

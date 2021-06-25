@@ -29,24 +29,13 @@
 
             <div class="profile__stat">
                 <div class="profile__stat-item">
-                    <div class="profile__stat-count">${user.books?size}</div>
+                    <div class="profile__stat-count">${booksPushedCount}</div>
                     <div class="profile__stat-name">Загружено книг</div>
                 </div>
-
                 <div class="profile__stat-item">
-                    <div class="profile__stat-count">${user.reviews?size}</div>
+                    <div class="profile__stat-count">${reviewsWrittenCount}</div>
                     <div class="profile__stat-name">Рецензий</div>
                 </div>
-
-<#--                <div class="profile__stat-item">-->
-<#--                    <div class="profile__stat-count">10</div>-->
-<#--                    <div class="profile__stat-name">Рецензии</div>-->
-<#--                </div>-->
-
-<#--                <div class="profile__stat-item">-->
-<#--                    <div class="profile__stat-count">10</div>-->
-<#--                    <div class="profile__stat-name">Любимые фильмы</div>-->
-<#--                </div>-->
             </div>
         </div>
     </section>

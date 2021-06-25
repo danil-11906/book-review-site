@@ -32,18 +32,19 @@ public class User implements Serializable {
     private String email;
 
     private String hashedPassword;
-
-    @Column(columnDefinition = "varchar(255) default 'no_avatar.png'")
     private String avatar;
-
     private String confirmCode;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-    @OneToMany(mappedBy = "pushedBy")
+    @OneToMany(mappedBy = "pushedBy", fetch = FetchType.EAGER)
     private Set<Book> books;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    private Set<Review> reviews;
 }

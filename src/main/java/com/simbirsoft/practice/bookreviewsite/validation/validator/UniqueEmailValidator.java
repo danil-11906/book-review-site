@@ -1,6 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.validation.validator;
 
-import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
+import com.simbirsoft.practice.bookreviewsite.service.api.SignUpService;
 import com.simbirsoft.practice.bookreviewsite.validation.annotation.UniqueEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

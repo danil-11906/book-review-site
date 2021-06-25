@@ -1,4 +1,4 @@
-package com.simbirsoft.practice.bookreviewsite.service;
+package com.simbirsoft.practice.bookreviewsite.service.impl;
 
 import com.simbirsoft.practice.bookreviewsite.dto.UserDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
@@ -11,8 +11,6 @@ import com.simbirsoft.practice.bookreviewsite.util.ConfirmMailGenerator;
 import org.modelmapper.ModelMapper;
 import com.simbirsoft.practice.bookreviewsite.service.EmailSendingService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
-import com.simbirsoft.practice.bookreviewsite.utils.ConfirmMailGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -114,5 +112,4 @@ public class SignUpServiceImpl implements SignUpService {
     public boolean userWithSuchEmailExists(String email) {
         return usersRepository.existsByEmail(email);
     }
-
 }

@@ -14,10 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -60,7 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                     .and()
-                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
                 .csrf().disable();
 
     }

@@ -11,8 +11,11 @@ import org.springframework.stereotype.Component;
 @Component("customUserDetailService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    public UserDetailsServiceImpl(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -20,5 +23,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with such email not found"));
         return new UserDetailsImpl(user);
     }
-
 }

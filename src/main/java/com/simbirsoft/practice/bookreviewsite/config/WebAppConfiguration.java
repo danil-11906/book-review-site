@@ -1,5 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,5 +30,10 @@ public class WebAppConfiguration {
     @Bean
     public ExecutorService executorService() {
         return Executors.newCachedThreadPool();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

@@ -895,6 +895,28 @@ html, body {
   .auth__login-btn:focus {
     outline: 0; }
 
+.social-google__icon {
+  height: 32px;
+  width: 32px;
+}
+
+.social-google__text {
+  margin-left: 10px;
+}
+
+.auth__social-google {
+  width: 100%;
+  background: #f2f2f2;
+  padding: 10px 30px;
+  border-radius: 10%;
+  color: black;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .auth__registration-btn {
   width: 100%;
   background: 0;

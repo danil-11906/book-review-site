@@ -2,7 +2,7 @@ package com.simbirsoft.practice.bookreviewsite.controller.dev;
 
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
-import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
+import com.simbirsoft.practice.bookreviewsite.service.api.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
-@RequestMapping("sign_up")
+@RequestMapping("signUp")
 @Profile("dev")
 public class SignUpController {
 

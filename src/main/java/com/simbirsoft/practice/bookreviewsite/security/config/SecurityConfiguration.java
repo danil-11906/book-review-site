@@ -4,7 +4,6 @@ import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilt
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,9 +23,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserConfirmedFilter userConfirmedFilter;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -45,7 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/log_out")
                 .logoutSuccessUrl("/login")
                     .and()
-                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
                 .csrf().disable();
     }
 

@@ -1,5 +1,6 @@
-package com.simbirsoft.practice.bookreviewsite.service;
+package com.simbirsoft.practice.bookreviewsite.service.impl;
 
+import com.simbirsoft.practice.bookreviewsite.service.api.EmailSendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

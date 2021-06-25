@@ -3,7 +3,7 @@ package com.simbirsoft.practice.bookreviewsite.controller.prod;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
-import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
+import com.simbirsoft.practice.bookreviewsite.service.api.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 @Profile("prod")
-@RequestMapping("sign_up")
+@RequestMapping("signUp")
 public class SignUpController {
 
     @Autowired
@@ -47,7 +47,7 @@ public class SignUpController {
         }
         else {
             signUpService.signUpWithRole(signUpForm, Role.USER);
-            return "redirect:/sign_up/pls_confirm_email";
+            return "redirect:/signUp/pls_confirm_email";
         }
     }
 

@@ -13,15 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-@Component
 public class UserConfirmedFilter extends OncePerRequestFilter {
 
     private Authentication authentication;
-
-    @Override
-    protected void initFilterBean() throws ServletException {
-        authentication = SecurityContextHolder.getContext().getAuthentication();
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -40,8 +34,12 @@ public class UserConfirmedFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
         boolean shouldFilter = request.getRequestURI().startsWith("/profile") &&
                 authentication != null;
+
         return !shouldFilter;
     }
 }

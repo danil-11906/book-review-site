@@ -52,10 +52,13 @@ public class Book {
     @JoinColumn(name = "pushed_by")
     private User pushedBy;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_category",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    private Set<Review> reviews;
 
 }

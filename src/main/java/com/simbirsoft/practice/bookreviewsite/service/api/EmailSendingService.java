@@ -1,4 +1,4 @@
-package com.simbirsoft.practice.bookreviewsite.service;
+package com.simbirsoft.practice.bookreviewsite.service.api;
 
 public interface EmailSendingService {
 

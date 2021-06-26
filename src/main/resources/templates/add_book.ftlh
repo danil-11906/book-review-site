@@ -1,8 +1,10 @@
 <#import "base.ftlh" as base>
+<#import "spring.ftl" as spring/>
 
 <@base.main [] "Добавать новую книгу">
     <section class="add_book">
         <div class="add_book__inner">
+            <@spring.bind "addBookForm"/>
             <form class="add_book__body" method="post" enctype="multipart/form-data">
                 <div class="profile__photo">
                     <input type="file" name="cover" placeholder="Выбрать фото" class="redact__photo">
@@ -11,28 +13,36 @@
                     <li class="add_book__info-group">
                         <label class="add_book__info-label">
                             Название:
-                            <input type="text" name="title" class="add_book__info-field">
+<#--                            <input type="text" name="title" class="add_book__info-field">-->
+                            <@spring.formInput path="addBookForm.title" attributes="class='add_book__info-field' placeholder='Введите название книги'"/>
+                            <@spring.showErrors separator="<br>" classOrStyle="error"/>
                         </label>
                     </li>
 
                     <li class="add_book__info-group">
                         <label class="add_book__info-label">
                             Автор:
-                            <input type="text" name="author" class="add_book__info-field">
+<#--                            <input type="text" name="author" class="add_book__info-field">-->
+                            <@spring.formInput path="addBookForm.author" attributes="class='add_book__info-field' placeholder='Автор книги'"/>
+                            <@spring.showErrors separator="<br>" classOrStyle="error"/>
                         </label>
                     </li>
 
                     <li class="add_book__info-group">
                         <label class="add_book__info-label">
                             Описание:
-                            <input type="text" name="description" class="add_book__info-field">
+<#--                            <input type="text" name="description" class="add_book__info-field">-->
+                            <@spring.formInput path="addBookForm.description" attributes="class='add_book__info-field' placeholder='Описание'"/>
+                            <@spring.showErrors separator="<br>" classOrStyle="error"/>
                         </label>
                     </li>
 
                     <li class="add_book__info-group">
                         <label class="add_book__info-label">
                             Год:
-                            <input type="number" name="releaseYear" class="add_book__info-field">
+<#--                            <input type="number" name="releaseYear" class="add_book__info-field">-->
+                            <@spring.formInput path="addBookForm.releaseYear" attributes="class='add_book__info-field' placeholder='Год'"/>
+                            <@spring.showErrors separator="<br>" classOrStyle="error"/>
                         </label>
                     </li>
 

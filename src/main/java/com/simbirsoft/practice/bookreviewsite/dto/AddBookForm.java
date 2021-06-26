@@ -3,7 +3,7 @@ package com.simbirsoft.practice.bookreviewsite.dto;
 import com.simbirsoft.practice.bookreviewsite.entity.Category;
 import com.simbirsoft.practice.bookreviewsite.entity.Country;
 import com.simbirsoft.practice.bookreviewsite.entity.Language;
-import com.simbirsoft.practice.bookreviewsite.validation.annotation.ValidDate;
+import com.simbirsoft.practice.bookreviewsite.validation.annotation.ValidYear;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,8 +38,8 @@ public class AddBookForm {
     @Length(max = 1000)
     private String description;
 
-    @NotNull
-    @ValidDate(message = "Year is not valid")
+    @NotNull(message = "не должно быть пустым")
+    @ValidYear(message = "не валидный год")
     private Integer releaseYear;
 
     private Set<Category> categories;

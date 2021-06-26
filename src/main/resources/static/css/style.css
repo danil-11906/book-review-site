@@ -2852,7 +2852,7 @@ html, body {
 
 
 .add_book__info-group {
-    width: 10%;
+    width: 350px;
     display: flex;
     flex-direction: column; }
 
@@ -2871,3 +2871,8 @@ html, body {
     padding: 10px 10px; }
 .add_book__info-field:focus {
     outline: 0; }
+
+.error {
+    font-size: 13px;
+    color: red;
+}

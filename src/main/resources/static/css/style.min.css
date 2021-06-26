@@ -2065,7 +2065,7 @@ html, body {
   outline: 0; }
 
 .add_book__info-group {
-  width: 10%;
+  width: 350px;
   display: flex;
   flex-direction: column; }
 
@@ -2185,4 +2185,9 @@ html, body {
   margin-bottom: 7px;
   font-size: 18px;
   color: #1a1d24;
+}
+
+.error {
+  font-size: 13px;
+  color: red;
 }

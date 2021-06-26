@@ -1,8 +1,7 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
-import com.simbirsoft.practice.bookreviewsite.enums.Country;
-import com.simbirsoft.practice.bookreviewsite.enums.Language;
+import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,8 @@ import java.util.Set;
 @Builder
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"pushedBy", "categories", "country", "language"})
+@ToString(exclude = {"pushedBy", "categories", "country", "language"})
 public class Book {
 
     @Id
@@ -25,20 +26,14 @@ public class Book {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private Country country;
-
-    @Enumerated(EnumType.STRING)
-    private Language language;
-
     @Column(length = 100, nullable = false)
     private String author;
 
     @Column(length = 1000, nullable = false)
     private String description;
 
-    @Column(length = 4, nullable = false)
-    private String releaseYear;
+    @Column(nullable = false)
+    private Integer releaseYear;
 
     private String cover;
 
@@ -49,13 +44,24 @@ public class Book {
     private BookStatus bookStatus;
 
     @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id")
+    private Language language;
+
+    @ManyToOne
     @JoinColumn(name = "pushed_by")
     private User pushedBy;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_category",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    private Set<Review> reviews;
 
 }

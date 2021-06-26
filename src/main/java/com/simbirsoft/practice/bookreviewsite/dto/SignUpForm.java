@@ -21,7 +21,7 @@ public class SignUpForm {
     private String email;
 
     @NotBlank(message = "Данное поле не должно быть пустым")
-    @Size(max = 50, message = "Максимальное количество символов - 30")
+    @Size(max = 50, message = "Максимальное количество символов - 50")
     private String name;
 
     @NotBlank(message = "Данное поле не должно быть пустым")

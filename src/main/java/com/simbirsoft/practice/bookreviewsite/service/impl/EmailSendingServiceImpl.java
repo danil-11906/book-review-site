@@ -1,5 +1,6 @@
-package com.simbirsoft.practice.bookreviewsite.service;
+package com.simbirsoft.practice.bookreviewsite.service.impl;
 
+import com.simbirsoft.practice.bookreviewsite.service.EmailSendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -29,5 +30,7 @@ public class EmailSendingServiceImpl implements EmailSendingService {
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(letter, true);
         }));
+
     }
+
 }

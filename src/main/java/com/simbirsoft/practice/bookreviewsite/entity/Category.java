@@ -1,20 +1,18 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = "books")
+@EqualsAndHashCode(exclude = {"books"})
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +22,4 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     private Set<Book> books;
-
 }

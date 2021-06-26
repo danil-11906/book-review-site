@@ -14,19 +14,19 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordsMatchValidator.class)
 public @interface PasswordsMatch {
-
     String message();
 
     String password();
+
     String verifyPassword();
 
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 
-    @Target({ ElementType.TYPE })
+    @Target({ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {
         PasswordsMatch[] value();
     }
-
 }

@@ -61,12 +61,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus) {
-        return bookRepository.findAllByBookStatus(pageable, bookStatus).map(book -> modelMapper.map(book, BookDTO.class));
+        return bookRepository.findAllByBookStatus(pageable, bookStatus)
+                .map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     @Override
     public Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title) {
-        return bookRepository.findAllByBookStatusAndTitleContainingIgnoreCase(pageable, bookStatus, title).map(book -> modelMapper.map(book, BookDTO.class));
+        return bookRepository.findAllByBookStatusAndTitleContainingIgnoreCase(pageable, bookStatus, title)
+                .map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     @Override
@@ -114,5 +116,27 @@ public class BookServiceImpl implements BookService {
         book = bookRepository.save(book);
 
         return modelMapper.map(book, BookDTO.class);
+    }
+
+    @Override
+    public Page<BookDTO> getAllUserBooks(Pageable pageable, Long userId) {
+        return bookRepository.findAllByPushedById(pageable, userId)
+                .map(book -> modelMapper.map(book, BookDTO.class));
+    }
+
+    @Override
+    public boolean deleteUserBook(Long bookId, Long userId) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+
+            if (userId.equals(book.getPushedBy().getId())) {
+                bookRepository.delete(book);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

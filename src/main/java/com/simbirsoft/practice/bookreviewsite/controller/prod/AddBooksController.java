@@ -48,6 +48,9 @@ public class AddBooksController {
 
     @PostMapping("/add")
     public String addBook(@AuthenticationPrincipal CustomUserDetails userDetails, AddBookForm addBookForm) {
+
+        // TODO validation
+
         bookService.createNewBook(addBookForm, userDetails.getUser().getId());
 
         return "redirect:/book/my";

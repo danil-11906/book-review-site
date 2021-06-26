@@ -25,4 +25,8 @@ public interface BookService {
     List<CategoryDTO> getAllBookCategory();
 
     BookDTO createNewBook(AddBookForm addBookForm, Long userId);
+
+    Page<BookDTO> getAllUserBooks(Pageable pageable, Long userId);
+
+    boolean deleteUserBook(Long bookId, Long userId);
 }

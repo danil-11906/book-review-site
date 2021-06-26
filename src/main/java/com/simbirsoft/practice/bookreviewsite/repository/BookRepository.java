@@ -19,4 +19,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAllByBookStatusAndTitleContainingIgnoreCase(Pageable pageable, BookStatus bookStatus, String title);
 
     int countBookByPushedById(Long id);
+
+    Page<Book> findAllByPushedById(Pageable pageable, Long userId);
 }

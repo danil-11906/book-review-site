@@ -40,8 +40,8 @@ public class AllBooksController {
         return "allBooks";
     }
 
-    @GetMapping("/rest/allBooks")
     @ResponseBody
+    @GetMapping("/rest/allBooks")
     public ResponseEntity<Page<BookDTO>> getAllBooks(@PageableDefault(size = 7, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable, String title) {
         Page<BookDTO> books;
         if (title == null) {

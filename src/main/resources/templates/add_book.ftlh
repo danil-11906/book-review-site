@@ -1,6 +1,6 @@
 <#import "base.ftlh" as base>
 
-<@base.main>
+<@base.main [] "Добавать новую книгу">
     <section class="add_book">
         <div class="add_book__inner">
             <form class="add_book__body" method="post" enctype="multipart/form-data">

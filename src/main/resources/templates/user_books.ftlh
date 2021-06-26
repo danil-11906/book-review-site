@@ -57,6 +57,28 @@
         </div>
     </footer>
 
+    <script src="/js/showMoreBook.js"></script>
+
+    <script>
+        let parent = document.querySelector(".all__films-films");
+        let loadMore = true;
+        let currentPage = 1;
+
+        window.onscroll = function () {
+            if (loadMore &&
+                window.scrollY + 1 >= document.documentElement.scrollHeight - document.documentElement.clientHeight) {
+
+                loadMore = false;
+
+                loadMoreBooks('/book/rest/user/4?page=' + currentPage + '&size=7&sort=id,desc', parent)
+                    .then(haveMore => loadMore = haveMore)
+
+                currentPage += 1;
+            }
+        }
+
+    </script>
+
     <script>
         const mainPage = document.querySelector('#page');
         const menu = document.querySelector(".burger");

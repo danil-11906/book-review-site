@@ -21,8 +21,6 @@ import java.util.Set;
 public class BookDTO {
     private Long id;
     private String title;
-    private Country country;
-    private Language language;
     private String author;
     private String description;
     private String releaseYear;
@@ -30,5 +28,7 @@ public class BookDTO {
     private float rate;
     private BookStatus bookStatus;
     private UserDTO pushedBy;
-    private Set<Category> categories;
+    private CountryDTO country;
+    private LanguageDTO language;
+    private Set<CategoryDTO> categories;
 }

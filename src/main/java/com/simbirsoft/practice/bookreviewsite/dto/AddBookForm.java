@@ -1,21 +1,15 @@
 package com.simbirsoft.practice.bookreviewsite.dto;
 
 import com.simbirsoft.practice.bookreviewsite.entity.Category;
+import com.simbirsoft.practice.bookreviewsite.entity.Country;
 import com.simbirsoft.practice.bookreviewsite.entity.Language;
-import com.simbirsoft.practice.bookreviewsite.entity.User;
-import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
-import com.simbirsoft.practice.bookreviewsite.validation.annotation.ValidCountry;
 import com.simbirsoft.practice.bookreviewsite.validation.annotation.ValidDate;
-import com.simbirsoft.practice.bookreviewsite.validation.annotation.ValidLanguage;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -31,12 +25,10 @@ public class AddBookForm {
     private String title;
 
     @NotNull
-    @ValidCountry(message = "Country is not found")
-    private Integer countryId;
+    private Country country;
 
     @NotNull
-    @ValidLanguage(message = "Language is not found")
-    private Integer languageId;
+    private Language language;
 
     @NotBlank
     @Length(max = 100)
@@ -51,4 +43,6 @@ public class AddBookForm {
     private Integer releaseYear;
 
     private Set<Category> categories;
+
+    private MultipartFile cover;
 }

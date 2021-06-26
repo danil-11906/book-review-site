@@ -69,7 +69,7 @@ async function showMore() {
 }
 
 async function getAllBooks() {
-    return await fetch('/rest/allBooks?page=' + page + '&size=' + size + '&sort=' + sort + ',' + direction,
+    return await fetch('/rest/all?page=' + page + '&size=' + size + '&sort=' + sort + ',' + direction,
         {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

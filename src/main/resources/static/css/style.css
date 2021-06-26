@@ -2747,3 +2747,132 @@ html, body {
     text-decoration: none;
     color: white;
 }
+
+.add_book {
+    padding: 60px 0;
+    width: 100%;
+    background: #e6e6e6 url("/assets/images/auth/bg_in_auth.png") center no-repeat;
+    background-size: cover;
+    margin-top: 85px;
+}
+
+.add_book__inner {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1170px;
+    background: white;
+    box-shadow: 0 -1px 15px #333333;
+}
+
+@media (max-width: 1439px) {
+    .add_book__inner {
+        max-width: 1100px;
+    }
+}
+
+@media (max-width: 1279px) {
+    .add_book__inner {
+        max-width: 964px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .add_book__inner {
+        max-width: 708px;
+    }
+}
+
+.add_book__header {
+    padding: 40px 30px;
+    width: 100%;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.add_book__title {
+    font-size: 30px;
+    color: #1a1d24;
+    margin-bottom: 10px;
+}
+
+.add_book__header-desc {
+    font-size: 18px;
+    color: #737373;
+    font-style: italic;
+}
+
+.add_book__body {
+    width: 100%;
+    padding: 50px 30px;
+}
+
+.add_book__body-inner {
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    margin-bottom: 50px;
+}
+
+.add_book__photo {
+    width: 120px;
+    margin-right: 20px;
+}
+
+.add_book__img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.add_book__info {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: calc(100% - 120px);
+    list-style: none;
+}
+
+.add_book__name {
+    margin-bottom: 7px;
+    font-size: 18px;
+    color: #1a1d24;
+}
+
+.add_book__info-item {
+    margin-bottom: 7px;
+    font-size: 18px;
+    color: #1a1d24;
+}
+
+
+.add_book__info-group {
+    width: 350px;
+    display: flex;
+    flex-direction: column; }
+
+.add_book__info-group--change {
+    margin-top: 40px; }
+
+.add_book__info-label {
+    font-size: 18px;
+    color: #1a1d24;
+    margin-bottom: 6px; }
+
+.add_book__info-field {
+    width: 350px;
+    margin-top: 5px;
+    outline: 0;
+    padding: 10px 10px; }
+.add_book__info-field:focus {
+    outline: 0; }
+
+.error {
+    font-size: 13px;
+    color: red;
+}

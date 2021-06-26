@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Roman Leontev
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 
 @Controller
+@RequestMapping("/book")
 public class AllBooksController {
 
     private final BookService bookService;
@@ -31,18 +34,21 @@ public class AllBooksController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/allBooks")
+    @GetMapping("/all")
     public String getAllBooksPage(@PageableDefault(size = 7, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         Page<BookDTO> books = bookService.findAllByBookStatus(pageable, BookStatus.PUBLIC);
 
         model.addAttribute("title", "All Films");
         model.addAttribute("books", books);
-        return "allBooks";
+
+        return "all_books";
     }
 
     @ResponseBody
-    @GetMapping("/rest/allBooks")
-    public ResponseEntity<Page<BookDTO>> getAllBooks(@PageableDefault(size = 7, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable, String title) {
+    @GetMapping("/rest/all")
+    public ResponseEntity<Page<BookDTO>> getAllBooks(String title,
+            @PageableDefault(size = 7, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
+
         Page<BookDTO> books;
         if (title == null) {
             books = bookService.findAllByBookStatus(pageable, BookStatus.PUBLIC);

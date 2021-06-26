@@ -42,9 +42,11 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @Transient
     @OneToMany(mappedBy = "pushedBy", fetch = FetchType.EAGER)
     private Set<Book> books;
 
+    @Transient
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private Set<Review> reviews;
 }

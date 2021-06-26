@@ -15,7 +15,8 @@ import java.util.Set;
 @Builder
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"pushedBy", "categories"})
+@EqualsAndHashCode(exclude = {"pushedBy", "categories", "country", "language"})
+@ToString(exclude = {"pushedBy", "categories", "country", "language"})
 public class Book {
 
     @Id
@@ -43,11 +44,11 @@ public class Book {
     private BookStatus bookStatus;
 
     @ManyToOne
-    @JoinTable(name = "country")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @ManyToOne
-    @JoinTable(name = "language")
+    @JoinColumn(name = "language_id")
     private Language language;
 
     @ManyToOne

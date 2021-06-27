@@ -1,5 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.config;
 
+import com.simbirsoft.practice.bookreviewsite.interceptor.PastUserInTemplateInterceptor;
 import org.modelmapper.ModelMapper;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -16,6 +17,7 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.DateFormat;
@@ -29,10 +31,13 @@ import java.util.concurrent.Executors;
 @EntityScan(basePackages = "com.simbirsoft.practice.bookreviewsite.entity")
 @ComponentScan(basePackages = "com.simbirsoft.practice.bookreviewsite")
 @EnableJpaRepositories(basePackages = "com.simbirsoft.practice.bookreviewsite.repository")
-public class WebAppConfiguration {
+public class WebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private PastUserInTemplateInterceptor userInTemplateInterceptor;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,8 +62,14 @@ public class WebAppConfiguration {
         return new Cloudinary(cloudinaryConfig);
 
     }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userInTemplateInterceptor);
     }
 }

@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
         book.setBookStatus(BookStatus.PUBLIC); //TODO set moderation
 
         MultipartFile cover = addBookForm.getCover();
-        if (cover != null) {
+        if (!cover.isEmpty()) {
             try {
                 File fileToUpload = new File(Objects.requireNonNull(cover.getOriginalFilename()));
 

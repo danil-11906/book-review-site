@@ -16,7 +16,7 @@
                         </div>
                         <a href="#" class="film__photo">
                             <img src="${book.cover}" alt="" class="allfilm__img">
-                            <span class="films__img-rating">${book.rate}</span>
+                            <span class="films__img-rating" title="${book.rate}">${book.rate}</span>
                         </a>
                         <div class="film__info-filter">
                             <a href="#" class="film__info-left">
@@ -58,8 +58,10 @@
     </footer>
 
     <script src="/js/showMoreBook.js"></script>
+    <script src="/js/raiteColor.js"></script>
 
     <script>
+        let rateItems = document.getElementsByClassName("films__img-rating")
         let parent = document.querySelector(".all__films-films");
         let loadMore = true;
         let currentPage = 1;
@@ -70,13 +72,17 @@
 
                 loadMore = false;
 
-                loadMoreBooks('/book/rest/user/4?page=' + currentPage + '&size=7&sort=id,desc', parent)
-                    .then(haveMore => loadMore = haveMore)
+                loadMoreBooks('/book/rest/user/${user.id}?page=' + currentPage + '&size=7&sort=id,desc', parent)
+                    .then(haveMore => {
+                        loadMore = haveMore;
+                        paintRate(rateItems);
+                    });
 
                 currentPage += 1;
             }
         }
 
+        paintRate(rateItems);
     </script>
 
     <script>

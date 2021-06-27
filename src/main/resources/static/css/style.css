@@ -2871,5 +2871,11 @@ html, body {
     margin-top: 5px;
     outline: 0;
     padding: 10px 10px; }
+
 .add_book__info-field:focus {
     outline: 0; }
+
+.error {
+    font-size: 13px;
+    color: red;
+}

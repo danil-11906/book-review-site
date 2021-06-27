@@ -2188,3 +2188,8 @@ html, body {
   font-size: 18px;
   color: #1a1d24;
 }
+
+.error {
+  font-size: 13px;
+  color: red;
+}

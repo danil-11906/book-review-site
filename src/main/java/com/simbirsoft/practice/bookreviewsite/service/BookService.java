@@ -16,10 +16,9 @@ import java.util.List;
  */
 
 public interface BookService {
+    Page<BookDTO> getAllByBookStatus(Pageable pageable, BookStatus bookStatus);
 
-    Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus);
-
-    Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
+    Page<BookDTO> getAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
 
     int getBooksCountUserPushed(Long userId);
 
@@ -30,6 +29,10 @@ public interface BookService {
     Page<BookDTO> getAllUserBooks(Pageable pageable, Long userId);
 
     boolean deleteUserBook(Long bookId, Long userId);
+
+    BookDTO getFirstByBookStatus(BookStatus bookStatus);
+
+    Page<BookDTO> getTopByBookStatus(Pageable pageable, BookStatus bookStatus);
 
     BookDTO getById(Long id);
 }

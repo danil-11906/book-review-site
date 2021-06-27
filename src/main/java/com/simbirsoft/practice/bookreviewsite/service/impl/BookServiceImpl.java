@@ -18,7 +18,9 @@ import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,13 +65,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus) {
+    public Page<BookDTO> getAllByBookStatus(Pageable pageable, BookStatus bookStatus) {
         return bookRepository.findAllByBookStatus(pageable, bookStatus)
                 .map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     @Override
-    public Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title) {
+    public Page<BookDTO> getAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title) {
         return bookRepository.findAllByBookStatusAndTitleContainingIgnoreCase(pageable, bookStatus, title)
                 .map(book -> modelMapper.map(book, BookDTO.class));
     }
@@ -141,6 +143,16 @@ public class BookServiceImpl implements BookService {
         }
 
         return false;
+    }
+
+    @Override
+    public BookDTO getFirstByBookStatus(BookStatus bookStatus) {
+        return modelMapper.map(bookRepository.findFirstByBookStatusOrderById(bookStatus).orElseThrow(IllegalArgumentException::new), BookDTO.class);
+    }
+
+    @Override
+    public Page<BookDTO> getTopByBookStatus(Pageable pageable, BookStatus bookStatus) {
+        return bookRepository.findAllByBookStatus(pageable, bookStatus).map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     @Override

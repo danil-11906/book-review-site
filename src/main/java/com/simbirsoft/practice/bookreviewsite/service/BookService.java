@@ -16,9 +16,9 @@ import java.util.List;
  */
 
 public interface BookService {
-    Page<BookDTO> getAllByBookStatus(Pageable pageable, BookStatus bookStatus);
+    Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus);
 
-    Page<BookDTO> getAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
+    Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
 
     int getBooksCountUserPushed(Long userId);
 

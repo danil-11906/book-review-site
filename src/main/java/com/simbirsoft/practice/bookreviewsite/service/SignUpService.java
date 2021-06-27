@@ -10,7 +10,7 @@ public interface SignUpService {
 
     void signUpWithRole(SignUpForm signUpForm, Role role);
 
-    UserDTO signUpWithOAuth(String email, String name);
+    User signUpWithOAuth(String email, String name);
 
     void confirmUserByConfirmCode(String confirmCode) throws UserNotFoundException;
 

@@ -1,6 +1,8 @@
 package com.simbirsoft.practice.bookreviewsite.security.config;
 
+import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
+import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2User;
 import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,11 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/book/delete/**").authenticated()
                 .antMatchers("/book/add").authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .usernameParameter("email")
-                .defaultSuccessUrl("/")
+                    .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error")
+                    .usernameParameter("email")
+                    .defaultSuccessUrl("/")
                 .and()
                 .oauth2Login()
                     .loginPage("/login")
@@ -67,13 +69,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                     .successHandler(this::onAuthenticationSuccess)
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                    .and()
-                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
-                //.anonymous().disable()
-                .csrf().disable();
+                    .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login")
+                .and()
+                    .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                    //.anonymous().disable()
+                    .csrf().disable();
 
     }
 
@@ -83,12 +85,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        String email = oAuth2User.getAttribute("email");
-        String name = oAuth2User.getAttribute("name");
+        if (oAuth2User.getUser() == null) {
+            String email = oAuth2User.getUsername();
+            String name = oAuth2User.getName();
 
-        signUpService.signUpWithOAuth(email, name);
+            User user = signUpService.signUpWithOAuth(email, name);
+
+            oAuth2User.setUser(user);
+        }
 
         httpServletResponse.sendRedirect("/home");
     }

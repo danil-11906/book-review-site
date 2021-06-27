@@ -65,13 +65,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDTO> getAllByBookStatus(Pageable pageable, BookStatus bookStatus) {
+    public Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus) {
         return bookRepository.findAllByBookStatus(pageable, bookStatus)
                 .map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     @Override
-    public Page<BookDTO> getAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title) {
+    public Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title) {
         return bookRepository.findAllByBookStatusAndTitleContainingIgnoreCase(pageable, bookStatus, title)
                 .map(book -> modelMapper.map(book, BookDTO.class));
     }
@@ -137,6 +137,15 @@ public class BookServiceImpl implements BookService {
             Book book = optionalBook.get();
 
             if (userId.equals(book.getPushedBy().getId())) {
+
+                try {
+                    String cover = book.getCover();
+                    String publicId = cover.substring(
+                            cover.lastIndexOf("/") + 1, cover.lastIndexOf("."));
+
+                    cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+                } catch (IOException ignore) {}
+
                 bookRepository.delete(book);
                 return true;
             }

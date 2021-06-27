@@ -3,9 +3,13 @@ package com.simbirsoft.practice.bookreviewsite.security.oauth;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 
@@ -15,10 +19,12 @@ import java.util.Map;
  * group 11-905
  */
 
-public class CustomOAuth2User implements OAuth2User, CustomUserDetails {
+public class CustomOAuth2User implements OAuth2User, Serializable, CustomUserDetails {
+
+    private static final long serialVersionUID = -6311927519298712654L;
 
     private final OAuth2User oAuth2User;
-
+    
     private User user;
 
     public CustomOAuth2User(OAuth2User oAuth2User, User user) {
@@ -42,7 +48,13 @@ public class CustomOAuth2User implements OAuth2User, CustomUserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return oAuth2User.getAuthorities();
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getUserStatus().toString()));
+        authorities.addAll(oAuth2User.getAuthorities());
+
+        return authorities;
     }
 
     @Override
@@ -84,5 +96,9 @@ public class CustomOAuth2User implements OAuth2User, CustomUserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

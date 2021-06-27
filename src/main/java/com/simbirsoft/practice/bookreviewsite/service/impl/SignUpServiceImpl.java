@@ -89,7 +89,7 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     @Override
-    public UserDTO signUpWithOAuth(String email, String name) {
+    public User signUpWithOAuth(String email, String name) {
         Optional<User> optionalUser = usersRepository.getByEmail(email);
 
         if (!optionalUser.isPresent()) {
@@ -102,10 +102,10 @@ public class SignUpServiceImpl implements SignUpService {
 
             user = usersRepository.save(user);
 
-            return modelMapper.map(user, UserDTO.class);
+            return user;
         }
 
-        return modelMapper.map(optionalUser.get(), UserDTO.class);
+        return optionalUser.get();
 
     }
 

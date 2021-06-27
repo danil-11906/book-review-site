@@ -1,10 +1,13 @@
 package com.simbirsoft.practice.bookreviewsite.security.config;
 
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
+import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -30,14 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final SignUpService signUpService;
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     public SecurityConfiguration(@Qualifier("customUserDetailService") UserDetailsService userDetailsService,
                                  PasswordEncoder passwordEncoder, UserConfirmedFilter userConfirmedFilter,
-                                 SignUpService signUpService) {
+                                 SignUpService signUpService, CustomOAuth2UserService customOAuth2UserService) {
 
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.userConfirmedFilter = userConfirmedFilter;
         this.signUpService = signUpService;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Override
@@ -47,19 +53,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/css/**", "/js/**", "/images/**", "/sign_up/**",
                         "/login/**").permitAll()
                 .antMatchers("/profile/**").authenticated()
-                    .and()
-                .oauth2Login().loginPage("/login").successHandler(this::onAuthenticationSuccess)
+                .antMatchers("/book/my").authenticated()
+                .antMatchers("/book/delete/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                    .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
+                    .successHandler(this::onAuthenticationSuccess)
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
-                    .and()
+                .and()
                 .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
 //                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
                 .csrf().disable();

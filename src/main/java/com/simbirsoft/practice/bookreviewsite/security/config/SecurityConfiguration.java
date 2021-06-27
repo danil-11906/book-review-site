@@ -1,6 +1,9 @@
 package com.simbirsoft.practice.bookreviewsite.security.config;
 
+import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
+import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2User;
+import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -30,14 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final SignUpService signUpService;
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     public SecurityConfiguration(@Qualifier("customUserDetailService") UserDetailsService userDetailsService,
                                  PasswordEncoder passwordEncoder, UserConfirmedFilter userConfirmedFilter,
-                                 SignUpService signUpService) {
+                                 SignUpService signUpService, CustomOAuth2UserService customOAuth2UserService) {
 
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.userConfirmedFilter = userConfirmedFilter;
         this.signUpService = signUpService;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Override
@@ -47,22 +53,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/css/**", "/js/**", "/images/**", "/sign_up/**",
                         "/login/**").permitAll()
                 .antMatchers("/profile/**").authenticated()
-                    .and()
-                .oauth2Login().loginPage("/login").successHandler(this::onAuthenticationSuccess)
+                .antMatchers("/book/my").authenticated()
+                .antMatchers("/book/delete/**").authenticated()
+                .antMatchers("/book/add").authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .usernameParameter("email")
-                .defaultSuccessUrl("/home")
+                    .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error")
+                    .usernameParameter("email")
+                    .defaultSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                    .loginPage("/login")
+                    .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                    .and()
-                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
-                .csrf().disable();
+                    .successHandler(this::onAuthenticationSuccess)
+                .and()
+                    .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login")
+                .and()
+                    .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                    //.anonymous().disable()
+                    .csrf().disable();
 
     }
 
@@ -72,12 +85,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        String email = oAuth2User.getAttribute("email");
-        String name = oAuth2User.getAttribute("name");
+        if (oAuth2User.getUser() == null) {
+            String email = oAuth2User.getUsername();
+            String name = oAuth2User.getName();
 
-        signUpService.signUpWithOAuth(email, name);
+            User user = signUpService.signUpWithOAuth(email, name);
+
+            oAuth2User.setUser(user);
+        }
 
         httpServletResponse.sendRedirect("/home");
     }

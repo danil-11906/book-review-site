@@ -7,11 +7,17 @@ import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.repository.UsersRepository;
+import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
 import com.simbirsoft.practice.bookreviewsite.util.ConfirmMailGenerator;
 import org.modelmapper.ModelMapper;
 import com.simbirsoft.practice.bookreviewsite.service.EmailSendingService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,19 +35,25 @@ public class SignUpServiceImpl implements SignUpService {
 
     private final ConfirmMailGenerator confirmMailGenerator;
 
+    private final UserDetailsService userDetailsService;
+
     private final ModelMapper modelMapper;
 
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    public SignUpServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder,
-                             EmailSendingService emailSendingService, ConfirmMailGenerator confirmMailGenerator,
+    public SignUpServiceImpl(UsersRepository usersRepository,
+                             PasswordEncoder passwordEncoder,
+                             EmailSendingService emailSendingService,
+                             ConfirmMailGenerator confirmMailGenerator,
+                             @Qualifier("customUserDetailService") UserDetailsService userDetailsService,
                              ModelMapper modelMapper) {
 
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailSendingService = emailSendingService;
         this.confirmMailGenerator = confirmMailGenerator;
+        this.userDetailsService = userDetailsService;
         this.modelMapper = modelMapper;
     }
 
@@ -77,7 +89,7 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     @Override
-    public UserDTO signUpWithOAuth(String email, String name) {
+    public User signUpWithOAuth(String email, String name) {
         Optional<User> optionalUser = usersRepository.getByEmail(email);
 
         if (!optionalUser.isPresent()) {
@@ -90,10 +102,10 @@ public class SignUpServiceImpl implements SignUpService {
 
             user = usersRepository.save(user);
 
-            return modelMapper.map(user, UserDTO.class);
+            return user;
         }
 
-        return modelMapper.map(optionalUser.get(), UserDTO.class);
+        return optionalUser.get();
 
     }
 
@@ -106,6 +118,12 @@ public class SignUpServiceImpl implements SignUpService {
 
         user.setUserStatus(UserStatus.CONFIRMED);
         usersRepository.save(user);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            userDetails.getUser().setUserStatus(UserStatus.CONFIRMED);
+        }
     }
 
     @Override

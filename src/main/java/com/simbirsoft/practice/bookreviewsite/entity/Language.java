@@ -20,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Language {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

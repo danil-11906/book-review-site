@@ -15,6 +15,14 @@
     <meta name="description" content="">
     
     <title>Вход</title>
+
+    <style>
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 18px;
+        }
+    </style>
 </head>
 <body>
 <svg display="none">
@@ -211,7 +219,7 @@
     <section class="auth">
         <div class="auth__bg"></div>
         <div class="auth__inner">
-            <a href="#" class="btn__back">
+            <a href="#" onclick="history.back();" class="btn__back">
                 <svg class="arrow__left-symbol">
                     <use xlink:href="#arrow-left"></use>
                 </svg>
@@ -235,7 +243,7 @@
 <#--                    <div class="input__error">Неправильно ввели пароль</div>-->
                 </div>
                 <#if error??>
-                    <div style="color: red">${error}</div>
+                    <div class="error">${error}</div>
                 </#if>
                 <button type="submit" class="auth__login-btn">Войти</button>
                 <a class="auth__social-google" href="/oauth2/authorization/google">

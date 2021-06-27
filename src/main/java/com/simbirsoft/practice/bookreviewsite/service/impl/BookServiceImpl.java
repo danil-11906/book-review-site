@@ -8,6 +8,7 @@ import com.simbirsoft.practice.bookreviewsite.dto.CategoryDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.Book;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
+import com.simbirsoft.practice.bookreviewsite.exception.ResourceNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.repository.BookRepository;
 import com.simbirsoft.practice.bookreviewsite.repository.CategoryRepository;
@@ -17,9 +18,13 @@ import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,7 +102,7 @@ public class BookServiceImpl implements BookService {
         book.setBookStatus(BookStatus.PUBLIC); //TODO set moderation
 
         MultipartFile cover = addBookForm.getCover();
-        if (cover != null) {
+        if (!cover.isEmpty()) {
             try {
                 File fileToUpload = new File(Objects.requireNonNull(cover.getOriginalFilename()));
 
@@ -132,11 +137,39 @@ public class BookServiceImpl implements BookService {
             Book book = optionalBook.get();
 
             if (userId.equals(book.getPushedBy().getId())) {
+
+                try {
+                    String cover = book.getCover();
+                    String publicId = cover.substring(
+                            cover.lastIndexOf("/") + 1, cover.lastIndexOf("."));
+
+                    cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+                } catch (IOException ignore) {}
+
                 bookRepository.delete(book);
                 return true;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public BookDTO getFirstByBookStatus(BookStatus bookStatus) {
+        return modelMapper.map(bookRepository.findFirstByBookStatusOrderById(bookStatus).orElseThrow(IllegalArgumentException::new), BookDTO.class);
+    }
+
+    @Override
+    public Page<BookDTO> getTopByBookStatus(Pageable pageable, BookStatus bookStatus) {
+        return bookRepository.findAllByBookStatus(pageable, bookStatus).map(book -> modelMapper.map(book, BookDTO.class));
+    }
+
+    @Override
+    public BookDTO getById(Long id) {
+
+        Book book = bookRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Book not found"));
+
+        return modelMapper.map(book, BookDTO.class);
     }
 }

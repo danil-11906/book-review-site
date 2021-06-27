@@ -11,8 +11,8 @@ async function loadMoreBooks(href, parentNode) {
 
     if (!response.ok) return false
 
-    let bookCount = parentNode.childElementCount;
     let result = await response.json();
+    let bookCount = parentNode.childElementCount;
     let books = await result.content;
 
 
@@ -25,9 +25,7 @@ async function loadMoreBooks(href, parentNode) {
         parentNode.insertBefore(bookDiv, parentNode.lastChild)
     }
 
-    page++;
-
-    return true;
+    return !result.last;
 }
 
 function getFormattedCategories(categories) {
@@ -51,7 +49,7 @@ function getBookHtml(book, counter) {
                 </div>
                 <a href="#" class="film__photo">
                     <img src="${book.cover}" alt="" class="allfilm__img">
-                    <span class="films__img-rating">${book.rate}</span>
+                    <span class="films__img-rating" title="${book.rate}">${book.rate}</span>
                 </a>
                 <div class="film__info-filter">
                     <a href="#" class="film__info-left">

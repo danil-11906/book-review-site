@@ -1,11 +1,12 @@
 package com.simbirsoft.practice.bookreviewsite.repository;
 
-import com.simbirsoft.practice.bookreviewsite.dto.BookDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.Book;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
  * @author Roman Leontev
@@ -21,4 +22,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     int countBookByPushedById(Long id);
 
     Page<Book> findAllByPushedById(Pageable pageable, Long userId);
+
+    Optional<Book> findFirstByBookStatusOrderById(BookStatus bookStatus);
 }

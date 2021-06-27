@@ -31,7 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final SignUpService signUpService;
 
     public SecurityConfiguration(@Qualifier("customUserDetailService") UserDetailsService userDetailsService,
-                                 PasswordEncoder passwordEncoder, UserConfirmedFilter userConfirmedFilter,
+                                 PasswordEncoder passwordEncoder,
+                                 UserConfirmedFilter userConfirmedFilter,
                                  SignUpService signUpService) {
 
         this.userDetailsService = userDetailsService;
@@ -46,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/css/**", "/js/**", "/images/**", "/sign_up/**",
                         "/login/**").permitAll()
-                .antMatchers("/profile/**").authenticated()
+                .antMatchers("/profile/**", "/book/my/**", "/book/add/**").authenticated()
                     .and()
                 .oauth2Login().loginPage("/login").successHandler(this::onAuthenticationSuccess)
                 .and()
@@ -54,14 +55,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/")
                     .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                     .and()
-                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
+                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                //.anonymous().disable()
                 .csrf().disable();
 
     }

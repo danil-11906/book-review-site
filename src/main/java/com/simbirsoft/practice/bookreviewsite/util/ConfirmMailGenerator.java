@@ -37,7 +37,7 @@ public class ConfirmMailGenerator {
 
         Map<String, String> model = new HashMap<>();
         model.put("name", name);
-        model.put("link", serverAddress + ":" + serverPort + "/sign_up/confirm_email/" +
+        model.put("link", serverAddress + ":" + serverPort + "/signUp/confirm_email/" +
                 confirmCode);
 
         StringWriter stringWriter = new StringWriter();

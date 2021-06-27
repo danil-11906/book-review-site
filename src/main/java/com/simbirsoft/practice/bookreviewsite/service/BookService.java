@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 public interface BookService {
+
     Page<BookDTO> findAllByBookStatus(Pageable pageable, BookStatus bookStatus);
 
     Page<BookDTO> findAllByBookStatusAndTitle(Pageable pageable, BookStatus bookStatus, String title);
@@ -29,4 +30,6 @@ public interface BookService {
     Page<BookDTO> getAllUserBooks(Pageable pageable, Long userId);
 
     boolean deleteUserBook(Long bookId, Long userId);
+
+    BookDTO getById(Long id);
 }

@@ -886,6 +886,7 @@ html, body {
   padding: 10px 30px;
   border: 0;
   outline: 0;
+  text-decoration: none;
   font-size: 20px;
   color: #000;
   font-weight: 500;
@@ -919,10 +920,11 @@ html, body {
 
 .auth__registration-btn {
   width: 100%;
-  background: 0;
+  background: #fac000;
   padding: 10px 30px;
-  border: 1px solid #989696;
+  border: 0;
   font-size: 20px;
+  text-decoration: none;
   color: #000;
   font-weight: 500;
   border-radius: 10px;
@@ -2185,9 +2187,4 @@ html, body {
   margin-bottom: 7px;
   font-size: 18px;
   color: #1a1d24;
-}
-
-.error {
-  font-size: 13px;
-  color: red;
 }

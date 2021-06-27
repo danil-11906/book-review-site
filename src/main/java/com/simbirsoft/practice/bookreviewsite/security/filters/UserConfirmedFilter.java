@@ -38,8 +38,8 @@ public class UserConfirmedFilter extends OncePerRequestFilter {
 
         authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        boolean shouldFilter = request.getRequestURI().startsWith("/profile") &&
-                authentication != null;
+        boolean shouldFilter = request.getRequestURI().startsWith("/profile")
+                && authentication != null;
 
         return !shouldFilter;
     }

@@ -61,6 +61,7 @@ public class UserDetailsImpl implements CustomUserDetails, Serializable {
         return true;
     }
 
+    @Override
     public User getUser() {
         return user;
     }

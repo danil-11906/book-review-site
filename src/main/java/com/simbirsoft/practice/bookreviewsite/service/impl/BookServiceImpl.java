@@ -8,6 +8,7 @@ import com.simbirsoft.practice.bookreviewsite.dto.CategoryDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.Book;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
+import com.simbirsoft.practice.bookreviewsite.exception.ResourceNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
 import com.simbirsoft.practice.bookreviewsite.repository.BookRepository;
 import com.simbirsoft.practice.bookreviewsite.repository.CategoryRepository;
@@ -18,8 +19,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -138,5 +141,14 @@ public class BookServiceImpl implements BookService {
         }
 
         return false;
+    }
+
+    @Override
+    public BookDTO getById(Long id) {
+
+        Book book = bookRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Book not found"));
+
+        return modelMapper.map(book, BookDTO.class);
     }
 }

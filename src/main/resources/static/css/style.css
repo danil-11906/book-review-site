@@ -1210,6 +1210,7 @@ html, body {
     border-radius: 10px;
     margin-bottom: 20px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .social-google__icon {
@@ -1240,9 +1241,10 @@ html, body {
 
 .auth__registration-btn {
     width: 100%;
-    background: 0;
+    background: #fac000;
     padding: 10px 30px;
-    border: 1px solid #989696;
+    border: 0;
+    text-decoration: none;
     font-size: 20px;
     color: #000;
     font-weight: 500;
@@ -2871,8 +2873,3 @@ html, body {
     padding: 10px 10px; }
 .add_book__info-field:focus {
     outline: 0; }
-
-.error {
-    font-size: 13px;
-    color: red;
-}

@@ -27,7 +27,6 @@ public class BookDTO {
     private String cover;
     private float rate;
     private BookStatus bookStatus;
-    private UserDTO pushedBy;
     private CountryDTO country;
     private LanguageDTO language;
     private Set<CategoryDTO> categories;

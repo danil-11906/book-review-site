@@ -17,6 +17,14 @@
     <meta name="description" content="">
     
     <title>BrainsCloud | Home</title>
+
+    <style>
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 18px;
+        }
+    </style>
 </head>
 <body>
 <svg display="none">
@@ -213,7 +221,7 @@
     <section class="auth">
         <div class="auth__bg"></div>
         <div class="auth__inner">
-            <a href="#" class="btn__back">
+            <a href="#" onclick="history.back();" class="btn__back">
                 <svg class="arrow__left-symbol">
                     <use xlink:href="#arrow-left"></use>
                 </svg>
@@ -229,39 +237,26 @@
             <@spring.bind "signUpForm"/>
             <form action="" class="login__form" method="post">
                 <div class="input__group">
-<#--                    <input type="text" id="email" name="email" class="input__field"-->
-<#--                           placeholder="Введите почту или логин">-->
-<#--                    <div class="input__error">Неправильно формат почты</div>-->
-                    <@spring.formInput path="signUpForm.name" attributes="style='input__field' placeholder='Введите Ваше полное имя'"/>
+                    <@spring.formInput path="signUpForm.name" attributes="style='input__field' placeholder='Введите Ваше полное имя' class='input__field'"/>
                     <@spring.showErrors separator="<br>" classOrStyle="error"/>
                 </div>
                 <div class="input__group">
-<#--                    <input type="text" id="username" name="username" class="input__field"-->
-<#--                           placeholder="Введите имя">-->
-                    <@spring.formInput path="signUpForm.email" attributes="style='input__field' placeholder='Введите адрес электронной почты'"/>
+                    <@spring.formInput path="signUpForm.email" attributes="style='input__field' placeholder='Введите адрес электронной почты' class='input__field'"/>
                     <@spring.showErrors separator="<br>" classOrStyle="error"/>
                 </div>
                 <div class="input__group">
-<#--                    <input type="text" id="surname" name="surname" class="input__field"-->
-<#--                           placeholder="Введите фамилия">-->
-                    <@spring.formPasswordInput path="signUpForm.password" attributes="style='input__field' placeholder='Введите пароль'"/>
+                    <@spring.formPasswordInput path="signUpForm.password" attributes="style='input__field' placeholder='Введите пароль' class='input__field'"/>
                     <@spring.showErrors separator="<br>" classOrStyle="error"/>
                 </div>
                 <div class="input__group">
-<#--                    <input type="text" id="password" name="password" class="input__field" placeholder="Введите пароль">-->
-<#--                    <div class="input__error">Неправильный формат пароля</div>-->
-                    <@spring.formPasswordInput path="signUpForm.verifyPassword" attributes="style='input__field' placeholder='Введите пароль еще раз'"/>
+                    <@spring.formPasswordInput path="signUpForm.verifyPassword" attributes="style='input__field' placeholder='Введите пароль еще раз' class='input__field'"/>
                     <@spring.showErrors separator="<br>" classOrStyle="error"/>
                 </div>
 
                 <#if passwordMismatch??>
                     <div class="error">${passwordMismatch}</div>
                 </#if>
-    
-<#--                <div class="input__group">-->
-<#--                    <input type="text" id="rep_password" name="password" class="input__field" placeholder="Введите повторно пароль">-->
-<#--                    <div class="input__error">Пароли не совпадают</div>-->
-<#--                </div>-->
+
                 <button type=submit class="auth__registration-btn">Зарегистрироваться</button>
                 <a class="auth__social-google" href="/oauth2/authorization/google">
                     <img class="social-google__icon" src="/images/auth/google-icon.png" alt="Google icon">

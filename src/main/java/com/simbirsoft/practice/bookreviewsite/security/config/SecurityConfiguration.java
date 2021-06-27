@@ -3,11 +3,9 @@ package com.simbirsoft.practice.bookreviewsite.security.config;
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
 import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -55,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/book/my").authenticated()
                 .antMatchers("/book/delete/**").authenticated()
+                .antMatchers("/book/add").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -63,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .and()
                 .oauth2Login()
-                .loginPage("/login")
+                    .loginPage("/login")
                     .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
                     .successHandler(this::onAuthenticationSuccess)
@@ -71,9 +70,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
-                .and()
-                .addFilterAfter(new UserConfirmedFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(new UserAuthenticatedFilter(), UserConfirmedFilter.class)
+                    .and()
+                .addFilterAfter(userConfirmedFilter, UsernamePasswordAuthenticationFilter.class)
+                //.anonymous().disable()
                 .csrf().disable();
 
     }

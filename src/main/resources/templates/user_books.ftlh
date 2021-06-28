@@ -49,7 +49,7 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__logo">
-                <img src="../static/images/header/logo-1x.png" alt="" class="footer__logo-img">
+                <img src="/images/header/logo-1x.png" alt="" class="footer__logo-img">
             </div>
             <div class="footer__copyright">
                 © 2021. All rights reserved.

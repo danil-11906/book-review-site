@@ -10,7 +10,7 @@
                 </div>
                 <h2 class="popular__title">${firstBook.title}</h2>
                 <p class="populat__description-short">${firstBook.description}</p>
-                <a href="#" class="popular__link">Read more
+                <a href="/book/${firstBook.id}" class="popular__link">Read more
                     <svg class="arrow__right-symbol">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
@@ -22,8 +22,8 @@
     <#if topBooks?? && topBooks.content??>
         <section class="top__films">
             <#list topBooks.content as topBook>
-                <a href="#" class="top__films-item">
-                    <img src="/images/topFilms/mongol.jpg" alt="" class="top__films-img">
+                <a href="/book/${topBook.id}" class="top__films-item">
+                    <img src="${topBook.cover}" alt="" class="top__films-img">
                     <article class="top__films-info">
                         <h3 class="top__films-title">${topBook.title}</h3>
                         <h4 class="top__films-genre"><#list topBook.categories as category>${category.title}<#sep>, </#list></h4>
@@ -60,18 +60,17 @@
                     <div class="new__movies-movies">
                         <#list freshBooks.content as freshBook>
                             <div class="new__movies-item">
-                                <a href="#" class="new__movies-img--block">
-                                    <img src="/images/topFilms/mongol.jpg" alt=""
-                                         class="new__movies-img">
+                                <a href="/book/${freshBook.id}" class="new__movies-img--block">
+                                    <img src="${freshBook.cover}" alt="" class="new__movies-img">
                                 </a>
-                                <a href="#" class="new__movies-name">${freshBook.title}</a>
+                                <a href="/book/${freshBook.id}" class="new__movies-name">${freshBook.title}</a>
                                 <div class="new__movies-genre">${freshBook.description}</div>
                             </div>
                         </#list>
                     </div>
                 </#if>
                 <div class="view__more-block">
-                    <a href="#" class="view__more-btn">View more films</a>
+                    <a href="/book/all" class="view__more-btn">View more films</a>
                 </div>
             </div>
         </div>

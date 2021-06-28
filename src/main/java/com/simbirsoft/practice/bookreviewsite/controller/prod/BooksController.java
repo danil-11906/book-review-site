@@ -16,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,14 +43,18 @@ public class BooksController {
 
     private final ReviewsService reviewsService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     public BooksController(BookService bookService, LanguageService languageService,
                            CountryService countryService, ReviewsService reviewsService,
                            ModelMapper modelMapper) {
+
         this.bookService = bookService;
         this.languageService = languageService;
         this.countryService = countryService;
         this.reviewsService = reviewsService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/all")
@@ -143,8 +148,9 @@ public class BooksController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable("bookId") Long bookId) {
 
-        LocalDateTime createdAt = reviewsService.addReview(
-                reviewAdditionDTO, userDetails.getUserDTO(), bookId);
+        UserDTO userDTO = modelMapper.map(userDetails.getUser(), UserDTO.class);
+
+        LocalDateTime createdAt = reviewsService.addReview(reviewAdditionDTO, userDTO, bookId);
 //        float rate = bookService.recalculateBookRate(reviewAdditionDTO, bookId);
 
         ReviewAdditionReturnDTO returnDTO = new ReviewAdditionReturnDTO(createdAt, 0);

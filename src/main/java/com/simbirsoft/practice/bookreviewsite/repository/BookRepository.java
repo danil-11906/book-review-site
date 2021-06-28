@@ -5,6 +5,10 @@ import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -15,6 +19,7 @@ import java.util.Optional;
  */
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+
     Page<Book> findAllByBookStatus(Pageable pageable, BookStatus bookStatus);
 
     Page<Book> findAllByBookStatusAndTitleContainingIgnoreCase(Pageable pageable, BookStatus bookStatus, String title);
@@ -24,4 +29,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAllByPushedById(Pageable pageable, Long userId);
 
     Optional<Book> findFirstByBookStatusOrderById(BookStatus bookStatus);
+
+    @Transactional
+    @Query("update Book book set book.rate = :rate where book.id = :id")
+    public void recalculateBookRate(@RequestParam("rate") float rate,
+                                    @RequestParam("id") Long id);
+
 }

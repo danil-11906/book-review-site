@@ -120,7 +120,7 @@ public class SignUpServiceImpl implements SignUpService {
         usersRepository.save(user);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
+        if (authentication != null && !(authentication.getPrincipal() instanceof String)) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             userDetails.getUser().setUserStatus(UserStatus.CONFIRMED);
         }

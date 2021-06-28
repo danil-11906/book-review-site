@@ -5,7 +5,9 @@ import com.cloudinary.utils.ObjectUtils;
 import com.simbirsoft.practice.bookreviewsite.dto.AddBookForm;
 import com.simbirsoft.practice.bookreviewsite.dto.BookDTO;
 import com.simbirsoft.practice.bookreviewsite.dto.CategoryDTO;
+import com.simbirsoft.practice.bookreviewsite.dto.ReviewAdditionDTO;
 import com.simbirsoft.practice.bookreviewsite.entity.Book;
+import com.simbirsoft.practice.bookreviewsite.entity.Review;
 import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import com.simbirsoft.practice.bookreviewsite.exception.ResourceNotFoundException;
@@ -25,13 +27,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import sun.misc.FloatingDecimal;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -172,4 +172,23 @@ public class BookServiceImpl implements BookService {
 
         return modelMapper.map(book, BookDTO.class);
     }
+
+//    @Override
+//    public float recalculateBookRate(ReviewAdditionDTO reviewAdditionDTO, Long bookId) {
+//
+//        Book book = bookRepository.getById(bookId);
+//
+//        Set<Review> reviews = book.getReviews();
+//        int sum = 0;
+//        for (Review review: reviews) {
+//            sum += review.getMark();
+//        }
+//        int rate = sum / reviews.size();
+//        System.out.println("rate: " + rate);
+//        book.setRate(rate);
+//        bookRepository.save(book);
+//
+//        return rate;
+//    }
+
 }

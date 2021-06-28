@@ -1,9 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,6 +16,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"books"})
+@ToString(exclude = {"books"})
 public class Country {
 
     @Id

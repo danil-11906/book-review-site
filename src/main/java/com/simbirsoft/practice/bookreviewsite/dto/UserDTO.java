@@ -1,7 +1,5 @@
 package com.simbirsoft.practice.bookreviewsite.dto;
 
-import com.simbirsoft.practice.bookreviewsite.entity.Book;
-import com.simbirsoft.practice.bookreviewsite.entity.Review;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.enums.UserStatus;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Set;
 
 @Data
 @Builder
@@ -25,5 +22,5 @@ public class UserDTO implements Serializable {
     private String email;
     private String avatar;
     private Role role;
-    private UserStatus userStatus;
+
 }

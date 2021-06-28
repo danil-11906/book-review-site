@@ -2189,6 +2189,67 @@ html, body {
   color: #1a1d24;
 }
 
+.comment__star {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+
+.comment__btn {
+  color: #fff;
+  background: #282828;
+  padding: 8px 16px;
+  cursor: pointer;
+  outline: none;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 4px;
+}
+
+.comment__stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  padding: 8px 8px 7px;
+  cursor: inherit;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 4px;
+  /*display: none;*/
+  visibility: hidden;
+  outline: none;
+  background: white;
+}
+
+.stars {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.symbol__star {
+  width: 20px;
+  height: 20px;
+  fill: rgba(0, 0, 0, 0.6);
+}
+
+.line__star {
+  display: block;
+  width: 1px;
+  height: 16px;
+  margin: 0 8px;
+  background: #444;
+  transform: translateY(-2px);
+}
+
+.close_star {
+  width: 20px;
+  cursor: pointer;
+  background-size: 20px 14px;
+}
+
 .error {
   font-size: 13px;
   color: red;

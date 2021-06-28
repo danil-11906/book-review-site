@@ -1,25 +1,16 @@
 package com.simbirsoft.practice.bookreviewsite.security.config;
 
-import com.simbirsoft.practice.bookreviewsite.entity.User;
 import com.simbirsoft.practice.bookreviewsite.security.filters.UserConfirmedFilter;
-import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2User;
 import com.simbirsoft.practice.bookreviewsite.security.oauth.CustomOAuth2UserService;
-import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -31,18 +22,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserConfirmedFilter userConfirmedFilter;
 
-    private final SignUpService signUpService;
-
     private final CustomOAuth2UserService customOAuth2UserService;
 
     public SecurityConfiguration(@Qualifier("customUserDetailService") UserDetailsService userDetailsService,
                                  PasswordEncoder passwordEncoder, UserConfirmedFilter userConfirmedFilter,
-                                 SignUpService signUpService, CustomOAuth2UserService customOAuth2UserService) {
+                                 CustomOAuth2UserService customOAuth2UserService) {
 
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.userConfirmedFilter = userConfirmedFilter;
-        this.signUpService = signUpService;
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
@@ -67,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .userInfoEndpoint().userService(customOAuth2UserService)
                     .and()
-                    .successHandler(this::onAuthenticationSuccess)
+                    .defaultSuccessUrl("/")
                 .and()
                     .logout()
                     .logoutUrl("/logout")
@@ -82,20 +70,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
-
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
-        CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-
-        if (oAuth2User.getUser() == null) {
-            String email = oAuth2User.getUsername();
-            String name = oAuth2User.getName();
-
-            User user = signUpService.signUpWithOAuth(email, name);
-
-            oAuth2User.setUser(user);
-        }
-
-        httpServletResponse.sendRedirect("/home");
     }
 }

@@ -89,28 +89,6 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     @Override
-    public User signUpWithOAuth(String email, String name) {
-        Optional<User> optionalUser = usersRepository.getByEmail(email);
-
-        if (!optionalUser.isPresent()) {
-            User user = User.builder()
-                    .email(email)
-                    .name(name)
-                    .role(Role.USER)
-                    .userStatus(UserStatus.CONFIRMED)
-                    .build();
-
-            user = usersRepository.save(user);
-
-            return user;
-        }
-
-        return optionalUser.get();
-
-    }
-
-
-    @Override
     public void confirmUserByConfirmCode(String confirmCode) throws UserNotFoundException {
 
         User user = usersRepository.getUserByConfirmCode(confirmCode)

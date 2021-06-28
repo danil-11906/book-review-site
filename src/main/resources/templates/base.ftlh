@@ -3,7 +3,7 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/css/style.min.css">
+        <link rel="stylesheet" href="/css/style.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
               rel="stylesheet">
@@ -204,6 +204,22 @@
 				l134.047-81.339c18.552,3.061,37.638,4.839,57.203,4.839c169.008,0,306-119.875,306-267.75C612,119.875,475.008,0,306,0z
 				 M306,497.25c-22.338,0-43.911-2.601-64.643-7.019l-90.041,54.123l1.205-88.701C83.5,414.133,38.25,345.513,38.25,267.75
 				c0-126.741,119.875-229.5,267.75-229.5c147.875,0,267.75,102.759,267.75,229.5S453.875,497.25,306,497.25z"/>
+            </g>
+        </symbol>
+
+        <symbol id="star" viewBox='0 0 14 14'>
+            <g>
+                <g>
+                    <g>
+                        <path d="M7 9.233L10.09 11l-.84-3.316L12 5.316H8.5L7 2 5.5 5.316H2l2.75 2.368L3.91 11z"/>
+                    </g>
+                </g>
+            </g>
+        </symbol>
+
+        <symbol id="close_star" viewBox='0 0 18 18'>
+            <g>
+                <path d="M9 7.94l4.47-4.47 1.06 1.06L10.06 9l4.469 4.468-1.06 1.06L9 10.062l-4.47 4.47-1.06-1.061L7.94 9 3.47 4.53l1.06-1.06L9 7.94z"/>
             </g>
         </symbol>
     </svg>

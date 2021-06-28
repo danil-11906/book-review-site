@@ -1,13 +1,13 @@
 package com.simbirsoft.practice.bookreviewsite.controller.prod;
 
-import com.simbirsoft.practice.bookreviewsite.dto.AddBookForm;
-import com.simbirsoft.practice.bookreviewsite.dto.BookDTO;
+import com.simbirsoft.practice.bookreviewsite.dto.*;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
 import com.simbirsoft.practice.bookreviewsite.service.BookService;
 import com.simbirsoft.practice.bookreviewsite.service.CountryService;
 import com.simbirsoft.practice.bookreviewsite.service.LanguageService;
 import com.simbirsoft.practice.bookreviewsite.service.ReviewsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 /**
  * @author Roman Leontev
@@ -41,13 +42,17 @@ public class BooksController {
 
     private final ReviewsService reviewsService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     public BooksController(BookService bookService, LanguageService languageService,
-                           CountryService countryService, ReviewsService reviewsService) {
+                           CountryService countryService, ReviewsService reviewsService,
+                           ModelMapper modelMapper) {
         this.bookService = bookService;
         this.languageService = languageService;
         this.countryService = countryService;
         this.reviewsService = reviewsService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/all")
@@ -106,13 +111,35 @@ public class BooksController {
     @GetMapping("{bookId}")
     public String getBookPage(@PathVariable("bookId") Long bookId,
                               @AuthenticationPrincipal CustomUserDetails userDetails,
-                              Model model) {
+                              Model model,
+                              @PageableDefault(size = 5,
+                                      sort = "createdAt",
+                                      direction = Sort.Direction.DESC) Pageable pageable) {
 
-        model.addAttribute("user", userDetails.getUser());
+        if (userDetails != null) {
+            model.addAttribute("user", userDetails.getUser());
+        }
 
         BookDTO book = bookService.getById(bookId);
+        Page<ReviewDTO> reviews = reviewsService.getAllByBook(book, pageable);
+
         model.addAttribute("book", book);
+        model.addAttribute("reviews", reviews);
 
         return "singleBook";
+    }
+
+    @PostMapping("{bookId}/addReview")
+    public ResponseEntity<LocalDateTime> addReview(
+            @RequestBody ReviewAdditionDTO reviewAdditionDTO,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable("bookId") Long bookId) {
+
+        System.out.println("hello");
+
+        LocalDateTime createdAt = reviewsService.addReview(
+                reviewAdditionDTO, userDetails.getUserDTO(), bookId);
+        return ResponseEntity.ok(createdAt);
+
     }
 }

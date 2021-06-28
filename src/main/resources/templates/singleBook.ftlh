@@ -22,7 +22,7 @@
                             <span class="film__field">Жанры:</span>
                             <span>
                                 <#list book.categories as genre>
-                                    ${genre}
+                                    ${genre.title}
                                 </#list>
                             </span>
                         </li>
@@ -30,9 +30,9 @@
                             <span class="film__field">Первая публикация:</span>
                             <span>${book.releaseYear}</span></li>
                         <li class="film__desc-item film__language"><span class="film__field">Язык:</span>
-                            <span>${book.language}</span></li>
+                            <span>${book.language.name}</span></li>
                         <li class="film__desc-item film__country"><span class="film__field">Страна:</span>
-                            <span>${book.country}</span></li>
+                            <span>${book.country.name}</span></li>
                     </ul>
                     <form action="" method="post" class="add_film">
                         <button type="button">Добавить в любимые</button>
@@ -43,7 +43,7 @@
 
             <div class="singleMovie__description">
                 <div class="singleMovie__description-title">Описание</div>
-                <div class="singleMovie__description-text">Quisque vitae ultrices justo auctor facilisis neque
+                <div class="singleMovie__description-text">
                     ${book.description}
                 </div>
             </div>
@@ -52,17 +52,19 @@
                 <div class="singleMovie__comments-top">
                     <div class="singleMovie__comments-header">
                         <div class="singleMovie__comments-title">Рецензии</div>
-                        <div class="singleMovie__comments-count">${book.revi}</div>
+                        <div class="singleMovie__comments-count">${reviews.getTotalElements()}</div>
                     </div>
-                    <div class="comment__auth">Чтобы написать комментарий <a href="#">войди</a></div>
-                    <form action="" class="comment__write" method="post">
-                    <textarea class="comment__field" name="comment" id="comment" cols="30" rows="10"
+                    <#if !user??>
+                        <div class="comment__auth">Чтобы написать рецензию, необходимо <a href="/login_or_sign_up">войти в аккаунт</a></div>
+                    <#else>
+                        <form action="" class="comment__write" method="post">
+                    <textarea maxlength="1000" class="comment__field" name="comment" id="comment" cols="30" rows="10"
                               placeholder="Ваш комментарий..."></textarea>
-                        <div class="comment__star">
-                            <button type="button" class="comment__btn">
-                                Оценить
-                            </button>
-                            <button class="comment__stars" type="button">
+                            <div class="comment__star">
+                                <button type="button" class="comment__btn">
+                                    Оценить
+                                </button>
+                                <button class="comment__stars" type="button">
                                             <span class="stars">
                                                 <span class="star star_one">
                                                     <svg class="symbol__star">
@@ -130,44 +132,52 @@
                                                     </svg>
                                                 </span>
                                             </span>
-                            </button>
-                        </div>
-                        <span>
-                        <button type="button" class="btn__comment">Отправить</button>
+                                </button>
+                            </div>
+                            <span>
+                        <button id="send-review" type="button" class="btn__comment">Отправить</button>
                     </span>
-                    </form>
+                        </form>
+                    </#if>
                 </div>
                 <div class="comment__items">
-                    <div class="comment__item">
-                        <div class="comment__desc">
-                            <div class="comment__avatar">
-                                <a href="#" class="comment__avatar-img">
-                                    <img src="assets/images/avatar/avatar.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="comment__info">
-                                <header class="comment__header">
-                                    <div class="comment__name">Юрий Козин</div>
-                                </header>
+                    <#list reviews.content as review>
+                        <div class="comment__item">
+                            <div class="comment__desc">
+                                <div class="comment__avatar">
+                                    <a href="#" class="comment__avatar-img">
+                                        <img
+                                             <#if review.author.avatar??>
+                                                 src="${review.author.avatar}"
+                                             <#else>
+                                                 src="/images/no_avatar.jpg"
+                                             </#if> alt="">
+                                    </a>
+                                </div>
+                                <div class="comment__info">
+                                    <header class="comment__header">
+                                        <div class="comment__name">${review.author.name}</div>
+                                    </header>
 
-                                <p class="comment__text">Не раскрыта тема комедийных британских сериалов. Навскидку -
-                                    Книжный
-                                    магазин Блэка, Идеал, Компьютерщики и много еще
-                                </p>
+                                    <p class="comment__text">
+                                        ${review.text}
+                                    </p>
+                                </div>
+                                <div class="comment__likes">
+                                    <button type="button">+</button>
+                                    <span class="comment__likes-count">${review.rate}</span>
+                                    <button type="button">-</button>
+                                </div>
                             </div>
-                            <div class="comment__likes">
-                                <button type="button">+</button>
-                                <span class="comment__likes-count">5</span>
-                                <button type="button">-</button>
+                            <div class="comment__footer">
+                                <a href="#" class="answer__btn">Ответить</a>
+                                <div class="comment__date">${review.createdAt}</div>
                             </div>
                         </div>
-                        <div class="comment__footer">
-                            <a href="#" class="answer__btn">Ответить</a>
-                            <div class="comment__date">15 фувраля, 18:02</div>
-                        </div>
-                    </div>
-
-
+                    </#list>
+                    <#if !reviews.isLast()>
+                        <button id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>
+                    </#if>
                 </div>
             </div>
         </div>
@@ -186,18 +196,97 @@
 
     <!-- Скрипт для отправки рецензии-->
     <script>
-        const btnSend = document.querySelector('.btn__comment')
+        const btnSend = document.getElementById("send-review")
         const blockScore = document.querySelector('.comment__star')
 
-        btnSend.addEventListener('click', function (e) {
-            let review = {
-                'score': 0
+        btnSend.addEventListener('click', async function (e) {
+
+            let text = document.querySelector('.comment__field').value
+            console.log('text: ' + text)
+            let body = {
+                'text': text,
+                'mark': 0
+            }
+            if (blockScore.childNodes[0].nextElementSibling.textContent.trim() !== 'Оценить') {
+                body.mark = parseInt(blockScore.childNodes[0].nextElementSibling.textContent.trim())
             }
 
-            if (blockScore.childNodes[0].nextElementSibling.textContent.trim() !== 'Оценить') {
-                review.score = parseInt(blockScore.childNodes[0].nextElementSibling.textContent.trim())
+            let response = await fetch('/book/${book.id}/addReview',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(body)
+                })
+
+            if (response.ok) {
+
+                let result = await response.json()
+                console.log(result)
+
+                let reviewsBlock = document.querySelector('.comment__items')
+
+                let avatar
+                <#if user??>
+                    <#if user.avatar??>
+                    avatar = `${user.avatar}`
+                    <#else>
+                    avatar = '/images/no_avatar.jpg'
+                    </#if>
+                </#if>
+                <#if user??>
+                    let name = `${user.name}`
+                </#if>
+                let createdAt = result
+
+                let newReview = document.createElement('div')
+                newReview.innerHTML = `<div class="comment__item">
+                            <div class="comment__desc">
+                                <div class="comment__avatar">
+                                    <a href="#" class="comment__avatar-img">
+                                        <img src="` + avatar + `" alt=""/>
+                                    </a>
+                                </div>
+                                <div class="comment__info">
+                                    <header class="comment__header">
+                                        <div class="comment__name">` + name + `</div>
+                                    </header>
+
+                                    <p class="comment__text">`
+                                        + text + `
+                                    </p>
+                                </div>
+                                <div class="comment__likes">
+                                    <button type="button">+</button>
+                                    <span class="comment__likes-count">` + 0 + `</span>
+                                    <button type="button">-</button>
+                                </div>
+                            </div>
+                            <div class="comment__footer">
+                                <a href="#" class="answer__btn">Ответить</a>
+                                <div class="comment__date">` + createdAt + `</div>
+                            </div>
+                        </div>`
+
+                let reviewsCount = reviewsBlock.childElementCount
+                let seeMoreBtn = document.getElementById("see-more-btn")
+                if (seeMoreBtn != null) {
+                    reviewsCount -= 1
+                }
+                if (reviewsCount % 5 === 0 && reviewsCount >= 5) {
+
+                    console.log(reviewsBlock.children[reviewsCount - 1])
+                    reviewsBlock.children[reviewsCount - 1].remove()
+
+                    if (seeMoreBtn == null) {
+                        seeMoreBtn = document.createElement('div')
+                        seeMoreBtn.innerHTML = `<button id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>`
+                        reviewsBlock.appendChild(seeMoreBtn)
+                    }
+                }
+                reviewsBlock.insertBefore(newReview, reviewsBlock.firstChild)
             }
-            console.log(review)
         })
     </script>
     <!--Скрипт для оценки-->
@@ -254,5 +343,5 @@
 
     </script>
 
-    <script src="assets/js/app.js"></script>
+    <script src="/js/app.js"></script>
 </@base.main>

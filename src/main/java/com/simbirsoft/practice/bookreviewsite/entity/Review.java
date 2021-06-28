@@ -1,11 +1,12 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Data
@@ -13,6 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(exclude = {"book", "author"})
+@ToString(exclude = {"book", "author"})
 public class Review {
 
     @Id
@@ -21,6 +24,10 @@ public class Review {
 
     private String text;
     private Integer mark;
+    private Integer rate;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

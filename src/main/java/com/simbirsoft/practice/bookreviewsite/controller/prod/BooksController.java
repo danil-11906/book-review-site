@@ -42,8 +42,6 @@ public class BooksController {
 
     private final ReviewsService reviewsService;
 
-    private final ModelMapper modelMapper;
-
     @Autowired
     public BooksController(BookService bookService, LanguageService languageService,
                            CountryService countryService, ReviewsService reviewsService,
@@ -52,7 +50,6 @@ public class BooksController {
         this.languageService = languageService;
         this.countryService = countryService;
         this.reviewsService = reviewsService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/all")
@@ -121,7 +118,7 @@ public class BooksController {
         }
 
         BookDTO book = bookService.getById(bookId);
-        Page<ReviewDTO> reviews = reviewsService.getAllByBook(book, pageable);
+        Page<ReviewDTO> reviews = reviewsService.getAllByBookId(bookId, pageable);
 
         model.addAttribute("book", book);
         model.addAttribute("reviews", reviews);
@@ -129,17 +126,28 @@ public class BooksController {
         return "singleBook";
     }
 
+    @GetMapping("{bookId}/ajax")
+    public ResponseEntity<Page<ReviewDTO>> getBookPage(@PathVariable("bookId") Long bookId,
+                              @PageableDefault(size = 5,
+                                      sort = "createdAt",
+                                      direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<ReviewDTO> reviews = reviewsService.getAllByBookId(bookId, pageable);
+        return ResponseEntity.ok(reviews);
+    }
+
+
     @PostMapping("{bookId}/addReview")
-    public ResponseEntity<LocalDateTime> addReview(
+    public ResponseEntity<ReviewAdditionReturnDTO> addReview(
             @RequestBody ReviewAdditionDTO reviewAdditionDTO,
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable("bookId") Long bookId) {
 
-        System.out.println("hello");
-
         LocalDateTime createdAt = reviewsService.addReview(
                 reviewAdditionDTO, userDetails.getUserDTO(), bookId);
-        return ResponseEntity.ok(createdAt);
+//        float rate = bookService.recalculateBookRate(reviewAdditionDTO, bookId);
 
+        ReviewAdditionReturnDTO returnDTO = new ReviewAdditionReturnDTO(createdAt, 0);
+        return ResponseEntity.ok(returnDTO);
     }
 }

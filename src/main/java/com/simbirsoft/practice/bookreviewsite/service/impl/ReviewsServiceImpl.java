@@ -42,8 +42,8 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
     @Override
-    public Page<ReviewDTO> getAllByBook(BookDTO bookDTO, Pageable pageable) {
-        return reviewsRepository.getAllByBookId(bookDTO.getId(), pageable)
+    public Page<ReviewDTO> getAllByBookId(Long bookId, Pageable pageable) {
+        return reviewsRepository.getAllByBookId(bookId, pageable)
                 .map(review -> modelMapper.map(review, ReviewDTO.class));
     }
 
@@ -63,6 +63,8 @@ public class ReviewsServiceImpl implements ReviewsService {
                 .rate(0)
                     .build();
         reviewsRepository.save(review);
+
+        System.out.println("bookId: " + review.getBook().getId());
 
         return review.getCreatedAt();
 

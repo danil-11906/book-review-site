@@ -13,7 +13,7 @@ public interface ReviewsService {
 
     int getReviewsCountUserWrote(Long userId);
 
-    Page<ReviewDTO> getAllByBook(BookDTO bookDTO, Pageable pageable);
+    Page<ReviewDTO> getAllByBookId(Long bookId, Pageable pageable);
 
     LocalDateTime addReview(ReviewAdditionDTO reviewAdditionDTO, UserDTO author, Long bookId);
 

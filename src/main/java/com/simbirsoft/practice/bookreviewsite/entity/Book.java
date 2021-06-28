@@ -1,5 +1,6 @@
 package com.simbirsoft.practice.bookreviewsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import lombok.*;
 import lombok.AllArgsConstructor;
@@ -45,22 +46,27 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
+    @JsonIgnore
     private Country country;
 
     @ManyToOne
     @JoinColumn(name = "language_id")
+    @JsonIgnore
     private Language language;
 
     @ManyToOne
     @JoinColumn(name = "pushed_by")
+    @JsonIgnore
     private User pushedBy;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_category",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
     private Set<Review> reviews;
 

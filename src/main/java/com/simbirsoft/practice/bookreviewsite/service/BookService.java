@@ -3,6 +3,7 @@ package com.simbirsoft.practice.bookreviewsite.service;
 import com.simbirsoft.practice.bookreviewsite.dto.AddBookForm;
 import com.simbirsoft.practice.bookreviewsite.dto.BookDTO;
 import com.simbirsoft.practice.bookreviewsite.dto.CategoryDTO;
+import com.simbirsoft.practice.bookreviewsite.dto.ReviewAdditionDTO;
 import com.simbirsoft.practice.bookreviewsite.enums.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,6 @@ public interface BookService {
     boolean deleteUserBook(Long bookId, Long userId);
 
     BookDTO getById(Long id);
+
+//    float recalculateBookRate(ReviewAdditionDTO reviewAdditionDTO, Long bookId);
 }

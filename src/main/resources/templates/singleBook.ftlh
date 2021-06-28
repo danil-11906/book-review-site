@@ -13,7 +13,7 @@
                     <h2 class="film__name">${book.title}</h2>
                     <ul class="film__list-desc">
                         <li class=" film__desc-item film__rating-field">
-                            <span class="film__field">Рейтинг:</span> <span class="rating__count">${book.rate}</span>
+                            <span id="rating" class="film__field">Рейтинг:</span> <span class="rating__count">${book.rate}</span>
                         </li>
                         <li class=" film__desc-item film__rating-field">
                             <span class="film__field">Автор:</span> <span class="rating__count">${book.author}</span>
@@ -176,7 +176,7 @@
                         </div>
                     </#list>
                     <#if !reviews.isLast()>
-                        <button id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>
+                        <button onclick="showMore()" id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>
                     </#if>
                 </div>
             </div>
@@ -196,8 +196,12 @@
 
     <!-- Скрипт для отправки рецензии-->
     <script>
+
+        let nextPageNumber = 1
+        const reviewsBlock = document.querySelector(".comment__items")
         const btnSend = document.getElementById("send-review")
         const blockScore = document.querySelector('.comment__star')
+        const seeMoreBtn = document.createElement("div")
 
         btnSend.addEventListener('click', async function (e) {
 
@@ -225,8 +229,6 @@
                 let result = await response.json()
                 console.log(result)
 
-                let reviewsBlock = document.querySelector('.comment__items')
-
                 let avatar
                 <#if user??>
                     <#if user.avatar??>
@@ -238,7 +240,7 @@
                 <#if user??>
                     let name = `${user.name}`
                 </#if>
-                let createdAt = result
+                let createdAt = result.createdAt
 
                 let newReview = document.createElement('div')
                 newReview.innerHTML = `<div class="comment__item">
@@ -281,11 +283,14 @@
 
                     if (seeMoreBtn == null) {
                         seeMoreBtn = document.createElement('div')
-                        seeMoreBtn.innerHTML = `<button id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>`
+                        seeMoreBtn.innerHTML = `<button onclick="showMore()" id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>`
                         reviewsBlock.appendChild(seeMoreBtn)
                     }
                 }
                 reviewsBlock.insertBefore(newReview, reviewsBlock.firstChild)
+
+                document.getElementById("rating").innerText = 'Рейтинг: ' + result.rate
+                document.querySelector('.singleMovie__comments-count').innerText = reviewsCount + 1
             }
         })
     </script>
@@ -340,6 +345,67 @@
                 }
             })
         })
+
+        async function showMore() {
+
+            document.getElementById("see-more-btn").remove()
+            let response = await fetch('/book/${book.id}/ajax/?page=' + nextPageNumber)
+            if (response.ok) {
+                let result = await response.json()
+                console.log(result)
+                let content = result.content
+                console.log(content)
+                for (let i = 0; i < content.length; i++) {
+
+                    let avatar
+                    if (content[i].author.avatar != null) {
+                        avatar = content[i].author.avatar
+                    } else avatar = '/images/no_avatar.jpg'
+                    let name = content[i].author.name
+                    let text = content[i].text
+                    let rate = content[i].rate
+                    let createdAt = content[i].createdAt
+
+                    let review = document.createElement('div')
+                    review.className = 'comment__item'
+                    review.innerHTML = `
+                            <div class="comment__desc">
+                                <div class="comment__avatar">
+                                    <a href="#" class="comment__avatar-img">
+                                        <img src="` + avatar + `" alt=""/>
+                                    </a>
+                                </div>
+                                <div class="comment__info">
+                                    <header class="comment__header">
+                                        <div class="comment__name">` + name + `</div>
+                                    </header>
+
+                                    <p class="comment__text">`
+                        + text + `
+                                    </p>
+                                </div>
+                                <div class="comment__likes">
+                                    <button type="button">+</button>
+                                    <span class="comment__likes-count">` + rate + `</span>
+                                    <button type="button">-</button>
+                                </div>
+                            </div>
+                            <div class="comment__footer">
+                                <a href="#" class="answer__btn">Ответить</a>
+                                <div class="comment__date">` + createdAt + `</div>
+                            </div>`
+
+                    reviewsBlock.appendChild(review)
+                }
+                nextPageNumber = result.number + 1
+                console.log('nextPage: ' + nextPageNumber)
+                if (!result.last) {
+                    let seeMoreBtn = document.createElement("div")
+                    seeMoreBtn.innerHTML = `<button onclick="showMore()" id="see-more-btn" type="button" class="btn__comment">Посмотреть еще</button>`
+                    reviewsBlock.appendChild(seeMoreBtn)
+                }
+            }
+        }
 
     </script>
 

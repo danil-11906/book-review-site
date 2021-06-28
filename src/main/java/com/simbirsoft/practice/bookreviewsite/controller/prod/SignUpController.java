@@ -3,9 +3,11 @@ package com.simbirsoft.practice.bookreviewsite.controller.prod;
 import com.simbirsoft.practice.bookreviewsite.dto.SignUpForm;
 import com.simbirsoft.practice.bookreviewsite.enums.Role;
 import com.simbirsoft.practice.bookreviewsite.exception.UserNotFoundException;
+import com.simbirsoft.practice.bookreviewsite.security.details.CustomUserDetails;
 import com.simbirsoft.practice.bookreviewsite.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,8 +58,15 @@ public class SignUpController {
     }
 
     @GetMapping("confirm_email/{confirm_code}")
-    public String confirmEmail(@PathVariable("confirm_code") String confirmCode) throws UserNotFoundException {
+    public String confirmEmail(@PathVariable("confirm_code") String confirmCode,
+                               Model model,
+                               @AuthenticationPrincipal CustomUserDetails userDetails) throws UserNotFoundException {
+
         signUpService.confirmUserByConfirmCode(confirmCode);
+
+        if (userDetails != null) {
+            model.addAttribute("authenticated", true);
+        }
         return "email_confirmed";
     }
 

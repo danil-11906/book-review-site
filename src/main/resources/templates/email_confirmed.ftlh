@@ -208,8 +208,13 @@
             <div class="login__form--title">
                 <span class="confirm__title">Почта успешно потдверждена!</span>
 
-                <p class="confirm__text">Теперь вы можете войти в свой аккаунт</p>
-                <a href="/login" class="confirm__btn">Войти</a>
+                <#if authenticated??>
+                    <a href="/" class="confirm__btn">На главную</a>
+                <#else>
+                    <p class="confirm__text">Теперь вы можете войти в свой аккаунт</p>
+                    <a href="/login" class="confirm__btn">Войти</a>
+                </#if>
+
             </div>
         </form>
     </div>

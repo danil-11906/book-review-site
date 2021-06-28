@@ -50,8 +50,12 @@ public class CustomOAuth2User implements OAuth2User, Serializable, CustomUserDet
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-        authorities.add(new SimpleGrantedAuthority(user.getUserStatus().toString()));
+
+        if (user != null) {
+            authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+            authorities.add(new SimpleGrantedAuthority(user.getUserStatus().toString()));
+        }
+
         authorities.addAll(oAuth2User.getAuthorities());
 
         return authorities;

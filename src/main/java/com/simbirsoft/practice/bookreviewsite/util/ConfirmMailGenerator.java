@@ -17,9 +17,6 @@ public class ConfirmMailGenerator {
     @Value("${server.url}")
     private String serverAddress;
 
-    @Value("${server.port}")
-    private String serverPort;
-
     private final Configuration configuration;
 
     public ConfirmMailGenerator(Configuration configuration) {
@@ -37,8 +34,7 @@ public class ConfirmMailGenerator {
 
         Map<String, String> model = new HashMap<>();
         model.put("name", name);
-        model.put("link", serverAddress + ":" + serverPort + "/signUp/confirm_email/" +
-                confirmCode);
+        model.put("link", serverAddress + "/signUp/confirm_email/" + confirmCode);
 
         StringWriter stringWriter = new StringWriter();
 
@@ -49,6 +45,5 @@ public class ConfirmMailGenerator {
         }
 
         return stringWriter.toString();
-
     }
 }
